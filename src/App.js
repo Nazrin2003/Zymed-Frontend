@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Nav from "./components/Nav";
 import Signup from "./components/Signup";
 import Signin from "./components/Signin";
 import CHome from "./components/CHome";
@@ -15,6 +14,7 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/home" element={<CHome />} />
         <Route path="/phome" element={<Phome />} />
+        <Route path="/med" element={<Medicine}
       </Routes>
     </Router>
   );
