@@ -1,6 +1,7 @@
-import React from 'react'
-import Nav from './Nav'
-import '../styles/chome.css'
+import React from "react";
+import { Link } from "react-router-dom";
+import Nav from "./Nav";
+import "../styles/chome.css";
 
 const CHome = () => {
   return (
@@ -18,7 +19,9 @@ const CHome = () => {
             />
             <div className="carousel-caption d-flex flex-column justify-content-center align-items-center">
               <h1 className="carousel-title display-3 fw-bold">Welcome to Zymed</h1>
-              <p className="carousel-text fs-4">Your trusted partner for medicines, prescriptions, and more.</p>
+              <p className="carousel-text fs-4">
+                Your trusted partner for medicines, prescriptions, and more.
+              </p>
             </div>
           </div>
           <div className="carousel-item" data-bs-interval="2000">
@@ -29,7 +32,9 @@ const CHome = () => {
             />
             <div className="carousel-caption d-flex flex-column justify-content-center align-items-center">
               <h1 className="carousel-title display-3 fw-bold">Easy Ordering</h1>
-              <p className="carousel-text fs-4">Order medicines online with just a few clicks.</p>
+              <p className="carousel-text fs-4">
+                Order medicines online with just a few clicks.
+              </p>
             </div>
           </div>
           <div className="carousel-item">
@@ -40,7 +45,9 @@ const CHome = () => {
             />
             <div className="carousel-caption d-flex flex-column justify-content-center align-items-center">
               <h1 className="carousel-title display-3 fw-bold">Fast Delivery</h1>
-              <p className="carousel-text fs-4">We ensure your medicines reach you quickly and safely.</p>
+              <p className="carousel-text fs-4">
+                We ensure your medicines reach you quickly and safely.
+              </p>
             </div>
           </div>
         </div>
@@ -55,27 +62,33 @@ const CHome = () => {
       </div>
 
       {/* Features Section */}
-      <section class="py-5 text-center features-section">
-        <div class="container">
-          <h2 class="fw-bold mb-5">Why Choose Us</h2>
-          <div class="row g-4">
-            <div class="col-md-4">
-              <div class="card p-4 h-100 shadow-sm">
-                <div class="feature-icon mb-3"><center><i class="fa-solid fa-capsules"></i></center></div>
+      <section className="py-5 text-center features-section">
+        <div className="container">
+          <h2 className="fw-bold mb-5">Why Choose Us</h2>
+          <div className="row g-4">
+            <div className="col-md-4">
+              <div className="card p-4 h-100 shadow-sm">
+                <div className="feature-icon mb-3">
+                  <i className="fa-solid fa-capsules"></i>
+                </div>
                 <h5>Wide Range</h5>
                 <p>From daily essentials to rare medicines, we’ve got it all.</p>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="card p-4 h-100 shadow-sm">
-                <div class="feature-icon mb-3"><center><i class="fa-solid fa-truck"></i></center></div>
+            <div className="col-md-4">
+              <div className="card p-4 h-100 shadow-sm">
+                <div className="feature-icon mb-3">
+                  <i className="fa-solid fa-truck"></i>
+                </div>
                 <h5>Fast Delivery</h5>
                 <p>Get your products delivered quickly and safely to your home.</p>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="card p-4 h-100 shadow-sm">
-                <div class="feature-icon mb-3"><center><i class="fa-solid fa-house-chimney-medical"></i></center></div>
+            <div className="col-md-4">
+              <div className="card p-4 h-100 shadow-sm">
+                <div className="feature-icon mb-3">
+                  <i className="fa-solid fa-house-chimney-medical"></i>
+                </div>
                 <h5>Trusted Quality</h5>
                 <p>We provide only genuine and high-quality products.</p>
               </div>
@@ -84,8 +97,78 @@ const CHome = () => {
         </div>
       </section>
 
-    </div>
-  )
-}
+      {/* Medicines Preview Section */}
+      <section className="py-5 medicines-section">
+        <div className="container">
+          <h2 className="fw-bold mb-4 text-center">Popular Medicines</h2>
+          <div className="row g-4">
+            <div className="col-md-3">
+              <div className="card shadow-sm medicine-card">
+                <img
+                  src="https://images.pexels.com/photos/3683077/pexels-photo-3683077.jpeg"
+                  alt="Paracetamol"
+                  className="card-img-top"
+                />
+                <div className="card-body text-center">
+                  <h5 className="card-title">Paracetamol</h5>
+                  <p className="card-text">Pain & fever relief</p>
+                </div>
+              </div>
+            </div>
 
-export default CHome
+            <div className="col-md-3">
+              <div className="card shadow-sm medicine-card">
+                <img
+                  src="https://images.pexels.com/photos/360622/pexels-photo-360622.jpeg"
+                  alt="Vitamin C"
+                  className="card-img-top"
+                />
+                <div className="card-body text-center">
+                  <h5 className="card-title">Vitamin C</h5>
+                  <p className="card-text">Boosts immunity</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-3">
+              <div className="card shadow-sm medicine-card">
+                <img
+                  src="https://images.pexels.com/photos/593451/pexels-photo-593451.jpeg"
+                  alt="Antibiotics"
+                  className="card-img-top"
+                />
+                <div className="card-body text-center">
+                  <h5 className="card-title">Antibiotics</h5>
+                  <p className="card-text">For bacterial infections</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-3">
+              <div className="card shadow-sm medicine-card">
+                <img
+                  src="https://images.pexels.com/photos/208518/pexels-photo-208518.jpeg"
+                  alt="Cough Syrup"
+                  className="card-img-top"
+                />
+                <div className="card-body text-center">
+                  <h5 className="card-title">Cough Syrup</h5>
+                  <p className="card-text">Relieves cough & sore throat</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* View More Button */}
+          <div className="text-center mt-4">
+            <Link to="/cmedicine" className="btn btn-primary">
+              View More Medicines
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default CHome;

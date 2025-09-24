@@ -1,51 +1,51 @@
+/* =========================
+   Carousel
+   ========================= */
 .carousel-img {
-  height: 500px; /* Smaller height */
+  height: 500px;
   width: 100%;
-  object-fit: cover; /* Ensures image covers without distortion */
-  object-position: center; /* Focus on the center of the image */
+  object-fit: cover;
+  object-position: center;
 }
 
 .carousel-caption {
-  position: absolute;
-  top: 50%; /* Move halfway down */
-  left: 50%; /* Move halfway across */
-  transform: translate(-50%, -50%); /* Center perfectly */
-  /* background: rgba(27, 31, 59, 0.6); Transparent navy */
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 80%;
-  text-align: center;
-   background: none !important; /* Remove background */
-  text-shadow: 1px 1px 8px rgba(0,0,0,0.8); /* Make text visible on bright images */
+  top: 50% !important;          /* vertically center */
+  left: 50% !important;         /* horizontally center */
+  transform: translate(-50%, -50%) !important; /* perfect center */
+  text-align: center !important; /* ensure center text */
+  right: auto !important;
+  bottom: auto !important;
+  width: 100%;
 }
 
 
 .carousel-title {
   font-size: 3rem;
   font-weight: bold;
-  color: #A8E6CF; /* Mint Green */
-  font-family: 'Poppins', sans-serif;
+  color: #a8e6cf; /* Mint Green */
+  font-family: "Poppins", sans-serif;
 }
 
 .carousel-text {
   font-size: 1.3rem;
-  color: #F8F8F8; /* Soft White */
-  font-family: 'Poppins', sans-serif;
+  color: #f8f8f8; /* Soft White */
+  font-family: "Poppins", sans-serif;
 }
 
-/* Features */
-/* Why Choose Us Section */
+/* =========================
+   Features Section
+   ========================= */
 .features-section {
-  background-color: #f8f9fa; /* Light background */
+  background-color: #f8f9fa;
 }
 
 .features-section h2 {
-  color: #1b1f3b; /* Dark navy */
+  color: #1b1f3b;
 }
 
 .feature-icon {
-  background-color: #A8E6CF; /* Mint green */
-  color: #1b1f3b; /* Dark navy icon */
+  background-color: #a8e6cf;
+  color: #1b1f3b;
   font-size: 2rem;
   width: 70px;
   height: 70px;
@@ -53,14 +53,32 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  margin: auto;
 }
 
 .features-section h5 {
-  color: #1b1f3b; /* Dark navy */
+  color: #1b1f3b;
   font-weight: 600;
 }
 
 .features-section p {
-  color: #444; /* Softer dark gray */
+  color: #444;
+}
+
+/* =========================
+   Medicines Preview Section
+   ========================= */
+.medicines-section {
+  background: #ffffff;
+}
+
+.medicines-section h2 {
+  color: #1b1f3b;
+}
+
+.medicine-card img {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
 }
