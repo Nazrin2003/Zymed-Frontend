@@ -1,0 +1,66 @@
+.carousel-img {
+  height: 500px; /* Smaller height */
+  width: 100%;
+  object-fit: cover; /* Ensures image covers without distortion */
+  object-position: center; /* Focus on the center of the image */
+}
+
+.carousel-caption {
+  position: absolute;
+  top: 50%; /* Move halfway down */
+  left: 50%; /* Move halfway across */
+  transform: translate(-50%, -50%); /* Center perfectly */
+  /* background: rgba(27, 31, 59, 0.6); Transparent navy */
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 80%;
+  text-align: center;
+   background: none !important; /* Remove background */
+  text-shadow: 1px 1px 8px rgba(0,0,0,0.8); /* Make text visible on bright images */
+}
+
+
+.carousel-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #A8E6CF; /* Mint Green */
+  font-family: 'Poppins', sans-serif;
+}
+
+.carousel-text {
+  font-size: 1.3rem;
+  color: #F8F8F8; /* Soft White */
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Features */
+/* Why Choose Us Section */
+.features-section {
+  background-color: #f8f9fa; /* Light background */
+}
+
+.features-section h2 {
+  color: #1b1f3b; /* Dark navy */
+}
+
+.feature-icon {
+  background-color: #A8E6CF; /* Mint green */
+  color: #1b1f3b; /* Dark navy icon */
+  font-size: 2rem;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.features-section h5 {
+  color: #1b1f3b; /* Dark navy */
+  font-weight: 600;
+}
+
+.features-section p {
+  color: #444; /* Softer dark gray */
+}
