@@ -21,21 +21,28 @@ const Signin = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:3030/signin", formData);
-      if (res.data.status === "Success") {
-        alert("Welcome " + res.data.user.name);
-        localStorage.setItem("token", res.data.token);
-        window.location.href = "/home"; // redirect after login
+  e.preventDefault();
+  try {
+    const res = await axios.post("http://localhost:3030/signin", formData);
+    if (res.data.status === "Success") {
+      alert("Welcome " + res.data.user.name);
+      localStorage.setItem("token", res.data.token);
+
+      // Redirect based on role
+      if (res.data.user.role === "pharmacist") {
+        window.location.href = "/phome"; // redirect to Phome.jsx
       } else {
-        alert(res.data.status);
+        window.location.href = "/home"; // default redirect
       }
-    } catch (err) {
-      console.error(err);
-      alert("Signin failed");
+    } else {
+      alert(res.data.status);
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Signin failed");
+  }
+};
+
 
   // Styles
   const page = {

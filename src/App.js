@@ -4,6 +4,7 @@ import Nav from "./components/Nav";
 import Signup from "./components/Signup";
 import Signin from "./components/Signin";
 import CHome from "./components/CHome";
+import Phome from "./components/Phome";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/home" element={<CHome />} />
+        <Route path="/phome" element={<Phome />} />
       </Routes>
     </Router>
   );
