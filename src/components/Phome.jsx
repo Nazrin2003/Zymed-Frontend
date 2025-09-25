@@ -12,8 +12,10 @@ const Phome = () => {
         price: "",
         quantity: "",
         expiryDate: "",
-        manufacturer: ""
+        manufacturer: "",
+        prescriptionRequired: false // new field
     });
+
     const [editId, setEditId] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
@@ -69,8 +71,10 @@ const Phome = () => {
             price: "",
             quantity: "",
             expiryDate: "",
-            manufacturer: ""
+            manufacturer: "",
+            prescriptionRequired: false
         });
+
     };
 
 
@@ -90,10 +94,12 @@ const Phome = () => {
             price: med.price,
             quantity: med.quantity,
             expiryDate: med.expiryDate.split("T")[0],
-            manufacturer: med.manufacturer
+            manufacturer: med.manufacturer,
+            prescriptionRequired: med.prescriptionRequired
         });
         setEditId(med._id);
     };
+
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -266,6 +272,23 @@ const Phome = () => {
                                                 <label className="form-label">Manufacturer</label>
                                                 <input type="text" className="form-control" name="manufacturer" value={formData.manufacturer} onChange={handleChange} />
                                             </div>
+
+                                            {/* Prescription Required */}
+                                            <div className="col-12 col-sm-6 col-md-4">
+                                                <label className="form-label">Requires Prescription</label>
+                                                <select
+                                                    className="form-select"
+                                                    name="prescriptionRequired"
+                                                    value={formData.prescriptionRequired}
+                                                    onChange={(e) =>
+                                                        setFormData({ ...formData, prescriptionRequired: e.target.value === "true" })
+                                                    }
+                                                >
+                                                    <option value="false">No</option>
+                                                    <option value="true">Yes</option>
+                                                </select>
+                                            </div>
+
 
                                             {/* Buttons */}
                                             <div className="col-12 col-sm-6 col-md-4">

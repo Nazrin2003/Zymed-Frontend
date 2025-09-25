@@ -68,7 +68,7 @@ const Signin = () => {
   const heading = {
     margin: 0,
     marginBottom: "18px",
-    fontSize: "22px",
+    fontSize: "27px",
     color: "#172B4D",
     textAlign: "center",
   };

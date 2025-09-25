@@ -26,8 +26,20 @@ const Medicine = () => {
                   <p className="card-text">Qty: {med.quantity}</p>
                   <p className="card-text">{med.manufacturer}</p>
                   <p className="card-text text-muted">Category: {med.category}</p>
-                  <button className="btn btn-outline-success w-100 mb-2">Add to Cart</button>
-                  <button className="btn btn-outline-info w-100">Subscribe</button>
+                  {med.prescriptionRequired ? (
+                    <button
+                      className="btn btn-outline-warning w-100"
+                      onClick={() => window.location.href = "/prescriptions"}
+                    >
+                      Upload Prescription
+                    </button>
+                  ) : (
+                    <>
+                      <button className="btn btn-outline-success w-100 mb-2">Add to Cart</button>
+                      <button className="btn btn-outline-info w-100">Subscribe</button>
+                    </>
+                  )}
+
                 </div>
               </div>
             </div>

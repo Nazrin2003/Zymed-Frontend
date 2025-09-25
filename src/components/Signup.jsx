@@ -12,7 +12,6 @@ const Signup = () => {
     address: ""
   });
 
-  // set page background & remove body margin (cleanup on unmount)
   useEffect(() => {
     const prevBg = document.body.style.backgroundColor;
     const prevMargin = document.body.style.margin;
@@ -62,8 +61,8 @@ const Signup = () => {
 
   const heading = {
     margin: 0,
-    marginBottom: "18px",
-    fontSize: "22px",
+    marginBottom: "20px",
+    fontSize: "29px",
     color: "#172B4D",
     textAlign: "center"
   };
@@ -117,8 +116,8 @@ const Signup = () => {
   return (
     <div style={page}>
       <div style={card}>
-        <h2 style={heading}><b>Zymed</b> — Create account</h2>
-        <p style={sub}>Sign up to browse medicines, manage orders and get refill reminders.</p>
+        <h1 style={heading}><b>Zymed</b> — Create account</h1>
+        {/* <p style={sub}>Sign up to browse medicines, manage orders and get refill reminders.</p> */}
 
         <form onSubmit={handleSubmit}>
           <input
