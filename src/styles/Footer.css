@@ -1,0 +1,13 @@
+.footer-section {
+  font-size: 0.95rem;
+}
+
+.footer-link {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}

@@ -27,6 +27,8 @@ const Signin = () => {
     if (res.data.status === "Success") {
       alert("Welcome " + res.data.user.name);
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
 
       // Redirect based on role
       if (res.data.user.role === "pharmacist") {

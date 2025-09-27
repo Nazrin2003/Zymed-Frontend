@@ -11,7 +11,7 @@ const Nav = () => {
   const handleLogout = () => {
     // Clear login state or tokens here if needed
     alert("Logged out successfully");
-    navigate("/signin");
+    navigate("/");
   };
 
   return (
@@ -35,7 +35,7 @@ const Nav = () => {
           <div className="navbar-nav ms-auto d-flex align-items-center">
             <Link to="/home" className={`nav-link ${isActive("/home") ? "active" : ""}`}>Home</Link>
             <Link to="/med" className={`nav-link ${isActive("/med") ? "active" : ""}`}>Medicines</Link>
-            <Link to="/orders" className={`nav-link ${isActive("/orders") ? "active" : ""}`}>Orders</Link>
+            <Link to="/cart" className={`nav-link ${isActive("/cart") ? "active" : ""}`}>Cart</Link>
             <Link to="/subscriptions" className={`nav-link ${isActive("/subscriptions") ? "active" : ""}`}>Subscriptions</Link>
             <button className="btn btn-outline-light ms-3" onClick={handleLogout}>Logout</button>
           </div>

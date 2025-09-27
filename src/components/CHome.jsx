@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
 import "../styles/chome.css";
+import Footer from "../components/Footer"; 
 
 const CHome = () => {
   return (
@@ -98,75 +99,82 @@ const CHome = () => {
       </section>
 
       {/* Medicines Preview Section */}
-      <section className="py-5 medicines-section">
-        <div className="container">
-          <h2 className="fw-bold mb-4 text-center">Popular Medicines</h2>
-          <div className="row g-4">
-            <div className="col-md-3">
-              <div className="card shadow-sm medicine-card">
-                <img
-                  src="https://images.pexels.com/photos/3683077/pexels-photo-3683077.jpeg"
-                  alt="Paracetamol"
-                  className="card-img-top"
-                />
-                <div className="card-body text-center">
-                  <h5 className="card-title">Paracetamol</h5>
-                  <p className="card-text">Pain & fever relief</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-3">
-              <div className="card shadow-sm medicine-card">
-                <img
-                  src="https://images.pexels.com/photos/360622/pexels-photo-360622.jpeg"
-                  alt="Vitamin C"
-                  className="card-img-top"
-                />
-                <div className="card-body text-center">
-                  <h5 className="card-title">Vitamin C</h5>
-                  <p className="card-text">Boosts immunity</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-3">
-              <div className="card shadow-sm medicine-card">
-                <img
-                  src="https://images.pexels.com/photos/593451/pexels-photo-593451.jpeg"
-                  alt="Antibiotics"
-                  className="card-img-top"
-                />
-                <div className="card-body text-center">
-                  <h5 className="card-title">Antibiotics</h5>
-                  <p className="card-text">For bacterial infections</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-3">
-              <div className="card shadow-sm medicine-card">
-                <img
-                  src="https://images.pexels.com/photos/208518/pexels-photo-208518.jpeg"
-                  alt="Cough Syrup"
-                  className="card-img-top"
-                />
-                <div className="card-body text-center">
-                  <h5 className="card-title">Cough Syrup</h5>
-                  <p className="card-text">Relieves cough & sore throat</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* View More Button */}
-          <div className="text-center mt-4">
-            <Link to="/cmedicine" className="btn btn-primary">
-              View More Medicines
-            </Link>
+     <section className="py-5 medicines-section">
+  <div className="container">
+    <h2 className="fw-bold mb-4 text-center">Medicine Categories</h2>
+    <div className="row g-4">
+      {/* Pain Relief */}
+      <div className="col-md-3">
+        <div className="card shadow-sm medicine-card">
+          <img
+            src="https://images.pexels.com/photos/3683077/pexels-photo-3683077.jpeg"
+            alt="Pain Relief"
+            className="card-img-top"
+          />
+          <div className="card-body text-center">
+            <h5 className="card-title">Pain Relief</h5>
+            <p className="card-text">Paracetamol, Ibuprofen, etc.</p>
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* Immunity Boosters */}
+      <div className="col-md-3">
+        <div className="card shadow-sm medicine-card">
+          <img
+            src="https://images.pexels.com/photos/360622/pexels-photo-360622.jpeg"
+            alt="Immunity Boosters"
+            className="card-img-top"
+          />
+          <div className="card-body text-center">
+            <h5 className="card-title">Immunity Boosters</h5>
+            <p className="card-text">Vitamin C, Zinc, etc.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Antibiotics */}
+      <div className="col-md-3">
+        <div className="card shadow-sm medicine-card">
+          <img
+            src="https://images.pexels.com/photos/593451/pexels-photo-593451.jpeg"
+            alt="Antibiotics"
+            className="card-img-top"
+          />
+          <div className="card-body text-center">
+            <h5 className="card-title">Antibiotics</h5>
+            <p className="card-text">Amoxicillin, Azithromycin, etc.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Cough & Cold */}
+      <div className="col-md-3">
+        <div className="card shadow-sm medicine-card">
+          <img
+            src="https://images.pexels.com/photos/208518/pexels-photo-208518.jpeg"
+            alt="Cough & Cold"
+            className="card-img-top"
+          />
+          <div className="card-body text-center">
+            <h5 className="card-title">Cough & Cold</h5>
+            <p className="card-text">Cough Syrup, Lozenges, etc.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* View More Button */}
+    <div className="text-center mt-4">
+      <Link to="/med" className="btn btn-primary">
+        Browse All Medicines
+      </Link>
+    </div>
+  </div>
+</section>
+
+
+<Footer />
     </div>
   );
 };

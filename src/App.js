@@ -5,17 +5,18 @@ import Signin from "./components/Signin";
 import CHome from "./components/CHome";
 import Phome from "./components/Phome";
 import Medicine from "./components/Medicine";
+import Cart from "./components/Cart";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Signup />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/signin" element={<Signin />} />
+        <Route path="/" element={<Signin />} />
         <Route path="/home" element={<CHome />} />
         <Route path="/phome" element={<Phome />} />
         <Route path="/med" element={<Medicine/>}/>
+        <Route path="/cart" element={<Cart/>}/>
       </Routes>
     </Router>
   );

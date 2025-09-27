@@ -173,7 +173,7 @@ const Signup = () => {
 
         <div style={bottomLine}>
           Already signed up?
-          <Link to="/signin" style={linkStyle}>Login</Link>
+          <Link to="/" style={linkStyle}>Login</Link>
         </div>
       </div>
     </div>
