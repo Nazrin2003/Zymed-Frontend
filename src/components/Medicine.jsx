@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import { useNavigate } from "react-router-dom";
+
 
 const Medicine = () => {
+  const navigate = useNavigate();
   const [medicines, setMedicines] = useState([]);
 
   useEffect(() => {
@@ -51,7 +54,7 @@ const Medicine = () => {
                   {med.prescriptionRequired ? (
                     <button
                       className="btn btn-outline-warning w-100"
-                      onClick={() => window.location.href = "/prescriptions"}
+                      onClick={() => window.location.href = "/cprescription"}
                     >
                       Upload Prescription
                     </button>

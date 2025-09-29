@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
-
   const user = JSON.parse(localStorage.getItem("user"));
-const userId = user?.id;
+  const userId = user?.id;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!userId) return;
-
     axios.get(`http://localhost:3030/cart/${userId}`)
       .then(res => {
         setCart(res.data);
@@ -25,11 +24,33 @@ const userId = user?.id;
       });
   }, [userId]);
 
+  const updateQuantity = async (medicineId, quantity) => {
+    try {
+      await axios.put(`http://localhost:3030/cart/${userId}`, { medicineId, quantity });
+      const res = await axios.get(`http://localhost:3030/cart/${userId}`);
+      setCart(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const deleteItem = async (medicineId) => {
+    await updateQuantity(medicineId, 0); // quantity 0 removes item
+  };
+
   const getTotal = () => {
     if (!cart || !cart.items) return 0;
-    return cart.items.reduce((sum, item) => {
-      return sum + item.medicineId.price * item.quantity;
-    }, 0);
+    return cart.items.reduce((sum, item) => sum + item.medicineId.price * item.quantity, 0);
+  };
+
+  const handleConfirm = async () => {
+    try {
+      await axios.post(`http://localhost:3030/orders/confirm/${userId}`);
+      navigate("/checkout"); // redirect to form page
+    } catch (err) {
+      console.error(err);
+      alert("Failed to confirm order.");
+    }
   };
 
   return (
@@ -43,42 +64,47 @@ const userId = user?.id;
         ) : !cart || cart.items.length === 0 ? (
           <p className="text-center">Your cart is empty.</p>
         ) : (
-          <div className="row g-4">
-            {cart.items.map((item, index) => (
-              <div key={index} className="col-md-4">
-                <div className="card shadow-sm h-100">
-                  <div className="card-body">
-                    <h5 className="card-title">{item.medicineId.name}</h5>
-                    <p className="card-text">Price: ₹{item.medicineId.price}</p>
-                    <p className="card-text">Quantity: {item.quantity}</p>
-                    <p className="card-text text-muted">Category: {item.medicineId.category}</p>
-                    <p className="card-text">{item.medicineId.manufacturer}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Total and Confirm Button */}
-        {!loading && cart && cart.items.length > 0 && (
-          <div className="text-center mt-4">
-            <h4>Total: ₹{getTotal()}</h4>
-            <button
-              className="btn btn-primary mt-2"
-              onClick={async () => {
-                try {
-                  const res = await axios.post(`http://localhost:3030/orders/confirm/${userId}`);
-                  alert("Order Confirmed!");
-                  setCart(null); // clear cart view
-                } catch (err) {
-                  console.error(err);
-                  alert("Failed to confirm order.");
-                }
-              }}
-            >
-              Confirm Order
-            </button>
+          <div className="table-responsive">
+            <table className="table table-bordered table-hover bg-white">
+              <thead className="table-success">
+                <tr>
+                  <th>Medicine</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Category</th>
+                  <th>Manufacturer</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cart.items.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.medicineId.name}</td>
+                    <td>₹{item.medicineId.price}</td>
+                    <td>
+                      <button className="btn btn-sm btn-outline-secondary me-1"
+                        onClick={() => updateQuantity(item.medicineId._id, item.quantity - 1)}
+                        disabled={item.quantity <= 1}>−</button>
+                      {item.quantity}
+                      <button className="btn btn-sm btn-outline-secondary ms-1"
+                        onClick={() => updateQuantity(item.medicineId._id, item.quantity + 1)}>+</button>
+                    </td>
+                    <td>{item.medicineId.category}</td>
+                    <td>{item.medicineId.manufacturer}</td>
+                    <td>
+                      <button className="btn btn-sm btn-outline-danger"
+                        onClick={() => deleteItem(item.medicineId._id)}>🗑️</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="text-end mt-3">
+              <h5>Total: ₹{getTotal()}</h5>
+              <button className="btn btn-primary mt-2" onClick={handleConfirm}>
+                Proceed to Checkout
+              </button>
+            </div>
           </div>
         )}
       </div>

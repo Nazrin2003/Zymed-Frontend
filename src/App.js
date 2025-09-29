@@ -6,6 +6,9 @@ import CHome from "./components/CHome";
 import Phome from "./components/Phome";
 import Medicine from "./components/Medicine";
 import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
+import Cprescription from "./components/Cprescription";
+import Pprescription from "./components/Pprescription";
 
 function App() {
   return (
@@ -14,9 +17,13 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Signin />} />
         <Route path="/home" element={<CHome />} />
-        <Route path="/phome" element={<Phome />} />
         <Route path="/med" element={<Medicine/>}/>
         <Route path="/cart" element={<Cart/>}/>
+        <Route path="/checkout" element={<Checkout/>}/>
+        <Route path="/cprescription" element={<Cprescription/>}/>
+
+        <Route path="/phome" element={<Phome />} />
+        <Route path="/pprescription" element={<Pprescription />} />
       </Routes>
     </Router>
   );

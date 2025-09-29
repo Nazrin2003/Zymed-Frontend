@@ -201,7 +201,7 @@ const Phome = () => {
                         </div>
                     </Link>
 
-                    <Link to="/prescriptions" style={{ ...navItem, color: "#fff", textDecoration: "none" }}>
+                    <Link to="/pprescription" style={{ ...navItem, color: "#fff", textDecoration: "none" }}>
                         <div style={{ padding: "8px", borderRadius: "6px", transition: "0.2s", cursor: "pointer" }}
                             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#374151"}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}>
