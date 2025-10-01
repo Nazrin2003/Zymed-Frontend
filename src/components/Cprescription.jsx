@@ -27,11 +27,14 @@ const Cprescription = () => {
     formData.append("notes", notes);
 
     try {
-      const res = await axios.post(`http://localhost:3030/prescriptions/upload/${userId}`, formData);
+      await axios.post(
+        `http://localhost:3030/prescriptions/upload/${userId}`,
+        formData
+      );
       setStatus("Prescription uploaded successfully!");
       setFile(null);
       setNotes("");
-      fetchPrescriptions(); // refresh table
+      fetchPrescriptions();
     } catch (err) {
       console.error(err);
       setStatus("Upload failed. Please try again.");
@@ -40,7 +43,9 @@ const Cprescription = () => {
 
   const fetchPrescriptions = async () => {
     try {
-      const res = await axios.get(`http://localhost:3030/prescriptions/user/${userId}`);
+      const res = await axios.get(
+        `http://localhost:3030/prescriptions/user/${userId}`
+      );
       setPrescriptions(res.data);
     } catch (err) {
       console.error(err);
@@ -58,16 +63,31 @@ const Cprescription = () => {
         <h2 className="text-center text-primary mb-4">Upload Prescription</h2>
 
         {/* Upload Form */}
-        <form className="bg-white p-4 shadow-sm rounded mb-5" onSubmit={handleUpload}>
+        <form
+          className="bg-white p-4 shadow-sm rounded mb-5"
+          onSubmit={handleUpload}
+        >
           <div className="mb-3">
             <label className="form-label">Choose Prescription File</label>
-            <input type="file" className="form-control" onChange={handleFileChange} required />
+            <input
+              type="file"
+              className="form-control"
+              onChange={handleFileChange}
+              required
+            />
           </div>
           <div className="mb-3">
             <label className="form-label">Additional Notes</label>
-            <textarea className="form-control" rows="3" value={notes} onChange={(e) => setNotes(e.target.value)} />
+            <textarea
+              className="form-control"
+              rows="3"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
           </div>
-          <button type="submit" className="btn btn-success w-100">Upload Prescription</button>
+          <button type="submit" className="btn btn-success w-100">
+            Upload Prescription
+          </button>
         </form>
         {status && <p className="text-center text-info">{status}</p>}
 
@@ -82,7 +102,7 @@ const Cprescription = () => {
                 <tr>
                   <th>File</th>
                   <th>Notes</th>
-                  <th>Status</th>
+                  <th>Status / Medicines</th>
                   <th>Uploaded At</th>
                 </tr>
               </thead>
@@ -90,16 +110,79 @@ const Cprescription = () => {
                 {prescriptions.map((presc) => (
                   <tr key={presc._id}>
                     <td>
-                      <a href={`http://localhost:3030/${presc.fileUrl}`} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={`http://localhost:3030/${presc.fileUrl}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         View File
                       </a>
                     </td>
                     <td>{presc.notes || "—"}</td>
+
+                    {/* ✅ Enhanced Status & Medicine Section */}
                     <td>
-                      <span className={`badge bg-${presc.status === "verified" ? "success" : presc.status === "rejected" ? "danger" : "warning"}`}>
+                      <span
+                        className={`badge bg-${
+                          presc.status === "verified"
+                            ? "success"
+                            : presc.status === "rejected"
+                            ? "danger"
+                            : "warning"
+                        }`}
+                      >
                         {presc.status}
                       </span>
+
+                      {/* Show medicines only if verified */}
+                      {presc.status === "verified" && (
+                        <div className="mt-2">
+                          <button
+                            className="btn btn-sm btn-info"
+                            onClick={async () => {
+                              const res = await axios.get(
+                                `http://localhost:3030/prescriptions/${presc._id}/reply`
+                              );
+                              if (res.data?.medicines) {
+                                setPrescriptions((prev) =>
+                                  prev.map((p) =>
+                                    p._id === presc._id
+                                      ? { ...p, reply: res.data }
+                                      : p
+                                  )
+                                );
+                              }
+                            }}
+                          >
+                            View Medicines
+                          </button>
+
+                          {presc.reply?.medicines?.map((m) => (
+                            <div
+                              key={m.medicineId._id}
+                              className="d-flex justify-content-between align-items-center mt-2"
+                            >
+                              <span>
+                                {m.medicineId.name} - ₹{m.medicineId.price}
+                              </span>
+                              <button
+                                className="btn btn-sm btn-primary"
+                                onClick={async () => {
+                                  await axios.post(
+                                    `http://localhost:3030/cart/${userId}`,
+                                    { medicineId: m.medicineId._id, quantity: 1 }
+                                  );
+                                  alert("Added to cart!");
+                                }}
+                              >
+                                Add to Cart
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </td>
+
                     <td>{new Date(presc.uploadedAt).toLocaleString()}</td>
                   </tr>
                 ))}

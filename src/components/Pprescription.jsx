@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import NavBar from "./NavBar";
+import { useNavigate } from "react-router-dom";
 
 const Pprescription = () => {
   const [prescriptions, setPrescriptions] = useState([]);
+  const navigate = useNavigate();
+
 
   const fetchPrescriptions = async () => {
     try {
@@ -29,6 +33,7 @@ const Pprescription = () => {
   }, []);
 
   return (
+
     <div className="bg-light min-vh-100">
       <div className="container py-5">
         <h2 className="text-center text-success mb-4">Pharmacist Dashboard</h2>
@@ -64,8 +69,13 @@ const Pprescription = () => {
                     </td>
                     <td>{new Date(presc.uploadedAt).toLocaleString()}</td>
                     <td>
-                      <button className="btn btn-sm btn-outline-success me-2"
-                        onClick={() => updateStatus(presc._id, "verified")}>Verify</button>
+                      <button
+                        className="btn btn-sm btn-outline-success me-2"
+                        onClick={() => navigate(`/verify-prescription/${presc._id}`)}
+                      >
+                        Verify
+                      </button>
+
                       <button className="btn btn-sm btn-outline-danger"
                         onClick={() => updateStatus(presc._id, "rejected")}>Reject</button>
                     </td>
@@ -76,7 +86,7 @@ const Pprescription = () => {
           </div>
         )}
       </div>
-      <Footer />
+
     </div>
   );
 };

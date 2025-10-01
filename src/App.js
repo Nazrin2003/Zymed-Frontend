@@ -9,6 +9,7 @@ import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import Cprescription from "./components/Cprescription";
 import Pprescription from "./components/Pprescription";
+import PrescriptionVerify from "./components/PrescriptionVerify";
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
 
         <Route path="/phome" element={<Phome />} />
         <Route path="/pprescription" element={<Pprescription />} />
+        <Route path="/verify-prescription/:id" element={<PrescriptionVerify />} />
+
       </Routes>
     </Router>
   );

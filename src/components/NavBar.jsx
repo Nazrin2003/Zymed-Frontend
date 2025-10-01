@@ -2,32 +2,86 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
-  const navStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "16px 24px",
-    backgroundColor: "#1f2937",
+  // Sidebar styles
+  const sidebar = {
+    width: "240px",
+    height: "100vh", // full height
+    backgroundColor: "#1f2937", // dark gray
     color: "#fff",
-    fontFamily: "Inter, sans-serif"
+    padding: "24px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    position: "fixed", // stays on left
+    top: 0,
+    left: 0,
   };
 
-  const linkStyle = {
+  const brand = {
+    fontSize: "24px",
+    fontWeight: "700",
+    marginBottom: "40px",
+    textAlign: "center",
+    color: "#fff",
+    letterSpacing: "1px",
+  };
+
+  const navItem = {
     color: "#fff",
     textDecoration: "none",
-    marginLeft: "20px",
-    fontWeight: "500"
+    display: "block",
+    padding: "10px 14px",
+    borderRadius: "6px",
+    marginBottom: "12px",
+    transition: "0.2s ease",
+    fontWeight: "500",
+  };
+
+  const buttonStyle = {
+    padding: "10px",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "600",
+    color: "#fff",
+    backgroundColor: "#dc2626", // red
+    transition: "0.2s ease",
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/signin";
   };
 
   return (
-    <nav style={navStyle}>
-      <div style={{ fontSize: "20px", fontWeight: "bold" }}>Zymed Pharmacy</div>
+    <div style={sidebar}>
+      {/* Top Menu */}
       <div>
-        <Link to="/phome" style={linkStyle}>Dashboard</Link>
-        <Link to="/home" style={linkStyle}>Customer View</Link>
-        <Link to="/signin" style={linkStyle}>Logout</Link>
+        <h2 style={brand}>Zymed</h2>
+
+        <Link to="/phome" style={navItem}>
+          Dashboard
+        </Link>
+
+        <Link to="/orders" style={navItem}>
+          Orders
+        </Link>
+
+        <Link to="/pprescription" style={navItem}>
+          Prescriptions
+        </Link>
       </div>
-    </nav>
+
+      {/* Logout Button */}
+      <button
+        onClick={handleLogout}
+        style={buttonStyle}
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#b91c1c")}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#dc2626")}
+      >
+        Logout
+      </button>
+    </div>
   );
 };
 
