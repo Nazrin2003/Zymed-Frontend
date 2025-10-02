@@ -46,7 +46,6 @@ const Medicine = () => {
     <div>
       <Nav />
       <div style={{ backgroundColor: "#f8f9fa", minHeight: "100vh", fontFamily: "'Poppins', sans-serif" }}>
-
         <div className="container py-5">
           <h2 style={{ color: "#1b1f3b" }} className="text-center mb-4">
             Browse Medicines
@@ -98,6 +97,38 @@ const Medicine = () => {
                   className="h-100"
                 >
                   <div style={{ padding: "15px" }}>
+                    {/* Medicine Image */}
+                    {med.imageUrl ? (
+                      <img
+                        src={`http://localhost:3030/${med.imageUrl}`}
+                        alt={med.name}
+                        style={{
+                          width: "100%",
+                          height: "160px",
+                          objectFit: "cover",
+                          borderRadius: "10px",
+                          marginBottom: "10px"
+                        }}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          width: "100%",
+                          height: "160px",
+                          backgroundColor: "#e5e7eb",
+                          borderRadius: "10px",
+                          marginBottom: "10px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "#6b7280",
+                          fontWeight: "500"
+                        }}
+                      >
+                        No Image
+                      </div>
+                    )}
+
                     <h5 style={{ color: "#1b1f3b", fontWeight: 600 }}>{med.name}</h5>
                     <p style={{ color: "#16a34a", fontWeight: 600 }}>₹{med.price}</p>
                     <p style={{ color: "#444" }}>Qty: {med.quantity}</p>

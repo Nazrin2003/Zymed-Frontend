@@ -15,12 +15,20 @@ const PrescriptionVerify = () => {
   }, []);
 
   const toggleSelect = (medicine) => {
-    if (selected.find((m) => m.medicineId === medicine._id)) {
-      setSelected(selected.filter((m) => m.medicineId !== medicine._id));
-    } else {
-      setSelected([...selected, { medicineId: medicine._id, quantity: 1 }]);
-    }
-  };
+  if (selected.find((m) => m.medicineId === medicine._id)) {
+    setSelected(selected.filter((m) => m.medicineId !== medicine._id));
+  } else {
+    setSelected([
+      ...selected,
+      {
+        medicineId: medicine._id,
+        price: medicine.price,
+        quantity: 1
+      }
+    ]);
+  }
+};
+
 
   const handleConfirm = async () => {
     try {

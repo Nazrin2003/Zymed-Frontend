@@ -46,7 +46,6 @@ const Cprescription = () => {
         `http://localhost:3030/prescriptions/user/${userId}`
       );
 
-      // fetch replies for verified ones
       const prescriptionsWithReplies = await Promise.all(
         res.data.map(async (p) => {
           if (p.status === "verified") {
@@ -75,134 +74,191 @@ const Cprescription = () => {
   }, [userId]);
 
   return (
-    <div className="bg-light min-vh-100">
+    <div style={{ background: "#f8f9fa", minHeight: "100vh" }}>
       <Nav />
+
+      {/* Page Header */}
+      <div
+        style={{
+          backgroundImage: `linear-gradient(rgb(50 38 120 / 50%), rgb(48 91 57 / 50%)), url('https://images.unsplash.com/photo-1696861286643-341a8d7a79e9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          padding: "130px 0px",
+          textAlign: "center",
+          color: "white",
+        }}
+      >
+        <h1 style={{ fontWeight: "bold", fontSize: "2.5rem" }}>Upload Prescription</h1>
+        <p style={{ opacity: 0.9 }}>Easily upload, track, and reorder your prescriptions</p>
+      </div>
+
+
       <div className="container py-5">
-        <h2 className="text-center text-primary mb-4">Upload Prescription</h2>
-
         {/* Upload Form */}
-        <form
-          className="bg-white p-4 shadow-sm rounded mb-5"
-          onSubmit={handleUpload}
+        <div className="card shadow-sm border-0 mb-5" style={{ background: "#ffffff" }}>
+          <div className="card-body p-4">
+            <h4 className="text-dark mb-4" style={{ color: "#1b1f3b" }}>
+              Upload New Prescription
+            </h4>
+            <form onSubmit={handleUpload}>
+              <div className="mb-3">
+                <label className="form-label fw-semibold" style={{ color: "#444" }}>
+                  Choose Prescription File
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  onChange={handleFileChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label fw-semibold" style={{ color: "#444" }}>
+                  Additional Notes
+                </label>
+                <textarea
+                  className="form-control"
+                  rows="3"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn w-100 fw-semibold"
+                style={{
+                  background: "#2563EB",
+                  color: "#fff",
+                  borderRadius: "8px",
+                  transition: "0.3s",
+                }}
+              >
+                Upload Prescription
+              </button>
+            </form>
+            {status && (
+              <p className="mt-3 text-center fw-semibold" style={{ color: "#16a34a" }}>
+                {status}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Previous Prescriptions */}
+        <h3
+          className="mb-3 fw-bold"
+          style={{ color: "#1b1f3b", borderBottom: "3px solid #a8e6cf", display: "inline-block" }}
         >
-          <div className="mb-3">
-            <label className="form-label">Choose Prescription File</label>
-            <input
-              type="file"
-              className="form-control"
-              onChange={handleFileChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Additional Notes</label>
-            <textarea
-              className="form-control"
-              rows="3"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="btn btn-success w-100">
-            Upload Prescription
-          </button>
-        </form>
-        {status && <p className="text-center text-info">{status}</p>}
+          Your Previous Prescriptions
+        </h3>
 
-        {/* Previous Prescriptions Table */}
-        <h4 className="mb-3">Your Previous Prescriptions</h4>
         {prescriptions.length === 0 ? (
-          <p>No prescriptions uploaded yet.</p>
+          <p style={{ color: "#444" }}>No prescriptions uploaded yet.</p>
         ) : (
-          <div className="table-responsive">
-            <table className="table table-bordered bg-white">
-              <thead className="table-light">
-                <tr>
-                  <th>File</th>
-                  <th>Notes</th>
-                  <th>Status / Medicines</th>
-                  <th>Uploaded At</th>
-                </tr>
-              </thead>
-              <tbody>
-                {prescriptions.map((presc) => (
-                  <tr key={presc._id}>
-                    <td>
-                      <a
-                        href={`http://localhost:3030/${presc.fileUrl}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View File
-                      </a>
-                    </td>
-                    <td>{presc.notes || "—"}</td>
+          <div className="table-responsive shadow-sm rounded">
+  <table className="table align-middle bg-white border">
+    <thead style={{ background: "#a8e6cf" }}>
+      <tr>
+        <th style={{ width: "10%" }}>File</th>
+        <th style={{ width: "15%" }}>Notes</th>
+        <th style={{ width: "55%" }}>Status / Medicines</th>
+        <th style={{ width: "20%" }}>Uploaded At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {prescriptions.map((presc) => (
+        <tr key={presc._id}>
+          <td>
+            <a
+              href={`http://localhost:3030/${presc.fileUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#2563EB", fontWeight: "500", wordBreak: "break-word" }}
+            >
+              View File
+            </a>
+          </td>
+          <td style={{ color: "#444", wordBreak: "break-word" }}>
+            {presc.notes || "—"}
+          </td>
+          <td>
+            <span
+              className="badge px-3 py-2"
+              style={{
+                background:
+                  presc.status === "verified"
+                    ? "#16a34a"
+                    : presc.status === "rejected"
+                      ? "#dc2626"
+                      : "#f59e0b",
+                color: "#fff",
+                fontSize: "0.9rem",
+                borderRadius: "6px",
+              }}
+            >
+              {presc.status}
+            </span>
 
-                    {/* ✅ Status + Medicines */}
-                    <td>
-                      <span
-                        className={`badge bg-${
-                          presc.status === "verified"
-                            ? "success"
-                            : presc.status === "rejected"
-                            ? "danger"
-                            : "warning"
-                        }`}
-                      >
-                        {presc.status}
-                      </span>
-
-                      {/* Show medicine cards if verified */}
-                      {presc.status === "verified" &&
-                        presc.reply?.medicines?.length > 0 && (
-                          <div className="mt-3">
-                            <div className="row g-3">
-                              {presc.reply.medicines.map((m) => (
-                                <div
-                                  key={m.medicineId._id}
-                                  className="col-md-6 col-lg-4"
-                                >
-                                  <div className="card shadow-sm p-3 h-100">
-                                    <h6 className="card-title">
-                                      {m.medicineId.name}
-                                    </h6>
-                                    <p className="mb-1">
-                                      Price: ₹{m.medicineId.price}
-                                    </p>
-                                    <p className="mb-2">
-                                      Qty Suggested: {m.quantity}
-                                    </p>
-                                    <button
-                                      className="btn btn-sm btn-primary w-100"
-                                      onClick={async () => {
-                                        await axios.post(
-                                          `http://localhost:3030/cart/${userId}`,
-                                          {
-                                            medicineId: m.medicineId._id,
-                                            quantity: 1,
-                                          }
-                                        );
-                                        alert("Added to cart!");
-                                      }}
-                                    >
-                                      Add to Cart
-                                    </button>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
+            {presc.status === "verified" &&
+              presc.reply?.medicines?.length > 0 && (
+                <div className="mt-3">
+                  <div className="row g-3">
+                    {presc.reply.medicines.map((m) => (
+                      <div key={m.medicineId._id} className="col-md-6 col-lg-4">
+                        <div
+                          className="card shadow-sm h-100"
+                          style={{ border: "1px solid #e5e7eb" }}
+                        >
+                          <div className="card-body">
+                            <h6 className="fw-bold" style={{ color: "#1b1f3b" }}>
+                              {m.medicineId.name}
+                            </h6>
+                            <p className="mb-1" style={{ color: "#444" }}>
+                              Price: ₹{m.medicineId.price}
+                            </p>
+                            <p className="mb-2" style={{ color: "#444" }}>
+                              Qty Suggested: {m.quantity}
+                            </p>
+                            <button
+                              className="btn w-100 fw-semibold"
+                              style={{
+                                background: "#2563EB",
+                                color: "#fff",
+                                borderRadius: "6px",
+                              }}
+                              onClick={async () => {
+                                await axios.post(
+                                  `http://localhost:3030/cart/${userId}`,
+                                  {
+                                    medicineId: m.medicineId._id,
+                                    quantity: 1,
+                                  }
+                                );
+                                alert("Added to cart!");
+                              }}
+                            >
+                              Add to Cart
+                            </button>
                           </div>
-                        )}
-                    </td>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+          </td>
+          <td style={{ color: "#444", whiteSpace: "nowrap" }}>
+            {new Date(presc.uploadedAt).toLocaleString()}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 
-                    <td>{new Date(presc.uploadedAt).toLocaleString()}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         )}
       </div>
+
       <Footer />
     </div>
   );
