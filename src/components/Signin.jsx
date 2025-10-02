@@ -21,30 +21,30 @@ const Signin = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const res = await axios.post("http://localhost:3030/signin", formData);
-    if (res.data.status === "Success") {
-      alert("Welcome " + res.data.user.name);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:3030/signin", formData);
+      if (res.data.status === "Success") {
+        alert("Welcome " + res.data.user.name);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
 
-
-      // Redirect based on role
-      if (res.data.user.role === "pharmacist") {
-        window.location.href = "/phome"; // redirect to Phome.jsx
+        if (res.data.user.role === "pharmacist") {
+          window.location.href = "/phome";
+        } else {
+          window.location.href = "/home";
+        }
       } else {
-        window.location.href = "/home"; // default redirect
+        alert(res.data.status);
       }
-    } else {
-      alert(res.data.status);
+    } catch (err) {
+      console.error(err);
+      alert("Signin failed");
     }
-  } catch (err) {
-    console.error(err);
-    alert("Signin failed");
-  }
-};
+  };
 
+  // Background image from the web
+  const bgImageUrl = "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=1400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWVkaWNpbmV8ZW58MHx8MHx8fDA%3D";
 
   // Styles
   const page = {
@@ -54,15 +54,16 @@ const Signin = () => {
     justifyContent: "center",
     padding: "24px",
     boxSizing: "border-box",
+    background: `linear-gradient(#2a60a6d6, rgb(35 117 95 / 75%)), url(${bgImageUrl}) center/cover no-repeat`,
   };
 
   const card = {
     width: "100%",
     maxWidth: "420px",
-    background: "#ffffff",
+    background: "#edf2f8ff",
     borderRadius: "12px",
     padding: "32px",
-    boxShadow: "0 10px 30px rgba(2,6,23,0.12)",
+    boxShadow: "0 10px 30px rgba(2,6,23,0.2)",
     fontFamily: "Inter, Arial, sans-serif",
     boxSizing: "border-box",
   };
@@ -94,7 +95,7 @@ const Signin = () => {
     cursor: "pointer",
     fontSize: "16px",
     fontWeight: 600,
-    background: "#16a34a",
+    background: "#2a60a6",
     color: "#fff",
     transition: "transform .08s ease, background .2s ease",
   };
@@ -107,7 +108,7 @@ const Signin = () => {
   };
 
   const linkStyle = {
-    color: "#2563EB",
+    color: "#2a60a6",
     textDecoration: "none",
     marginLeft: "6px",
     fontWeight: 600,
@@ -146,7 +147,6 @@ const Signin = () => {
           </button>
         </form>
 
-        {/* 👇 Opposite of Signup page */}
         <div style={bottomLine}>
           Don’t have an account?
           <Link to="/signup" style={linkStyle}>Signup</Link>

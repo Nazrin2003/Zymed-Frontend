@@ -1,78 +1,68 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-  // Sidebar styles
-  const sidebar = {
-    width: "240px",
-    height: "100vh", // full height
-    backgroundColor: "#1f2937", // dark gray
-    color: "#fff",
-    padding: "24px",
+  const navigate = useNavigate();
+
+  const navBarStyle = {
     display: "flex",
-    flexDirection: "column",
+    alignItems: "center",
     justifyContent: "space-between",
-    position: "fixed", // stays on left
+    backgroundColor: "#1f2937",
+    color: "#fff",
+    padding: "12px 24px",
+    position: "fixed",
     top: 0,
     left: 0,
+    right: 0,
+    zIndex: 1000,
+    boxShadow: "0 2px 8px rgba(0,0,0,0.2)"
   };
 
   const brand = {
     fontSize: "24px",
     fontWeight: "700",
-    marginBottom: "40px",
-    textAlign: "center",
-    color: "#fff",
-    letterSpacing: "1px",
+    color: "#a8e6cf",
+    letterSpacing: "1px"
   };
 
-  const navItem = {
+  const navLinks = {
+    display: "flex",
+    gap: "20px",
+    fontWeight: 500
+  };
+
+  const linkStyle = {
     color: "#fff",
     textDecoration: "none",
-    display: "block",
-    padding: "10px 14px",
-    borderRadius: "6px",
-    marginBottom: "12px",
     transition: "0.2s ease",
-    fontWeight: "500",
   };
 
   const buttonStyle = {
-    padding: "10px",
+    padding: "8px 16px",
     border: "none",
     borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "600",
     color: "#fff",
-    backgroundColor: "#dc2626", // red
-    transition: "0.2s ease",
+    backgroundColor: "#dc2626",
+    transition: "0.2s ease"
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/signin";
+    localStorage.removeItem("role");
+    navigate("/signin");
   };
 
   return (
-    <div style={sidebar}>
-      {/* Top Menu */}
-      <div>
-        <h2 style={brand}>Zymed</h2>
-
-        <Link to="/phome" style={navItem}>
-          Dashboard
-        </Link>
-
-        <Link to="/orders" style={navItem}>
-          Orders
-        </Link>
-
-        <Link to="/pprescription" style={navItem}>
-          Prescriptions
-        </Link>
+    <div style={navBarStyle}>
+      <div style={brand}>Zymed</div>
+      <div style={navLinks}>
+        <Link to="/phome" style={linkStyle}>Dashboard</Link>
+        <Link to="/orders" style={linkStyle}>Orders</Link>
+        <Link to="/pprescription" style={linkStyle}>Prescriptions</Link>
       </div>
-
-      {/* Logout Button */}
       <button
         onClick={handleLogout}
         style={buttonStyle}

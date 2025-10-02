@@ -38,25 +38,29 @@ const Signup = () => {
     }
   };
 
-  // styles
+  // Background image URL
+  const bgImageUrl = "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=1400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fG1lZGljaW5lfGVufDB8fDB8fHww";
+
+  // Styles
   const page = {
-    minHeight: "100vh",                // full viewport height
+    minHeight: "100vh",
     display: "flex",
-    alignItems: "center",              // vertical center
-    justifyContent: "center",          // horizontal center
+    alignItems: "center",
+    justifyContent: "center",
     padding: "24px",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
+    background: `linear-gradient(rgb(97 85 224 / 61%), rgb(232 184 184)), url(${bgImageUrl}) center/cover no-repeat`,
   };
 
   const card = {
     width: "100%",
     maxWidth: "480px",
-    background: "#ffffff",
+    background: "rgba(255, 255, 255, 0.9)",
     borderRadius: "12px",
     padding: "32px",
-    boxShadow: "0 10px 30px rgba(2,6,23,0.12)",
+    boxShadow: "0 10px 30px rgba(2,6,23,0.2)",
     fontFamily: "Inter, Arial, sans-serif",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
   };
 
   const heading = {
@@ -64,15 +68,7 @@ const Signup = () => {
     marginBottom: "20px",
     fontSize: "29px",
     color: "#172B4D",
-    textAlign: "center"
-  };
-
-  const sub = {
-    marginTop: 0,
-    marginBottom: "20px",
-    fontSize: "13px",
-    color: "#6B7280",
-    textAlign: "center"
+    textAlign: "center",
   };
 
   const input = {
@@ -83,7 +79,7 @@ const Signup = () => {
     border: "1px solid #E6E9EE",
     fontSize: "14px",
     outline: "none",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
   };
 
   const button = {
@@ -94,30 +90,29 @@ const Signup = () => {
     cursor: "pointer",
     fontSize: "16px",
     fontWeight: 600,
-    background: "#2563EB",
+    background: "#7725eb",
     color: "#fff",
-    transition: "transform .08s ease, background .2s ease"
+    transition: "transform .08s ease, background .2s ease",
   };
 
   const bottomLine = {
     marginTop: "14px",
     textAlign: "center",
     color: "#6B7280",
-    fontSize: "14px"
+    fontSize: "14px",
   };
 
   const linkStyle = {
-    color: "#2563EB",
+    color: "#7725eb",
     textDecoration: "none",
     marginLeft: "6px",
-    fontWeight: 600
+    fontWeight: 600,
   };
 
   return (
     <div style={page}>
       <div style={card}>
         <h1 style={heading}><b>Zymed</b> — Create account</h1>
-        {/* <p style={sub}>Sign up to browse medicines, manage orders and get refill reminders.</p> */}
 
         <form onSubmit={handleSubmit}>
           <input

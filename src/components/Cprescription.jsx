@@ -11,9 +11,7 @@ const Cprescription = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.id;
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+  const handleFileChange = (e) => setFile(e.target.files[0]);
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -41,12 +39,32 @@ const Cprescription = () => {
     }
   };
 
+  // fetch prescriptions & also fetch reply if verified
   const fetchPrescriptions = async () => {
     try {
       const res = await axios.get(
         `http://localhost:3030/prescriptions/user/${userId}`
       );
-      setPrescriptions(res.data);
+
+      // fetch replies for verified ones
+      const prescriptionsWithReplies = await Promise.all(
+        res.data.map(async (p) => {
+          if (p.status === "verified") {
+            try {
+              const replyRes = await axios.get(
+                `http://localhost:3030/prescriptions/${p._id}/reply`
+              );
+              return { ...p, reply: replyRes.data };
+            } catch (err) {
+              console.error("Reply fetch failed:", err);
+              return p;
+            }
+          }
+          return p;
+        })
+      );
+
+      setPrescriptions(prescriptionsWithReplies);
     } catch (err) {
       console.error(err);
     }
@@ -120,7 +138,7 @@ const Cprescription = () => {
                     </td>
                     <td>{presc.notes || "—"}</td>
 
-                    {/* ✅ Enhanced Status & Medicine Section */}
+                    {/* ✅ Status + Medicines */}
                     <td>
                       <span
                         className={`badge bg-${
@@ -134,53 +152,47 @@ const Cprescription = () => {
                         {presc.status}
                       </span>
 
-                      {/* Show medicines only if verified */}
-                      {presc.status === "verified" && (
-                        <div className="mt-2">
-                          <button
-                            className="btn btn-sm btn-info"
-                            onClick={async () => {
-                              const res = await axios.get(
-                                `http://localhost:3030/prescriptions/${presc._id}/reply`
-                              );
-                              if (res.data?.medicines) {
-                                setPrescriptions((prev) =>
-                                  prev.map((p) =>
-                                    p._id === presc._id
-                                      ? { ...p, reply: res.data }
-                                      : p
-                                  )
-                                );
-                              }
-                            }}
-                          >
-                            View Medicines
-                          </button>
-
-                          {presc.reply?.medicines?.map((m) => (
-                            <div
-                              key={m.medicineId._id}
-                              className="d-flex justify-content-between align-items-center mt-2"
-                            >
-                              <span>
-                                {m.medicineId.name} - ₹{m.medicineId.price}
-                              </span>
-                              <button
-                                className="btn btn-sm btn-primary"
-                                onClick={async () => {
-                                  await axios.post(
-                                    `http://localhost:3030/cart/${userId}`,
-                                    { medicineId: m.medicineId._id, quantity: 1 }
-                                  );
-                                  alert("Added to cart!");
-                                }}
-                              >
-                                Add to Cart
-                              </button>
+                      {/* Show medicine cards if verified */}
+                      {presc.status === "verified" &&
+                        presc.reply?.medicines?.length > 0 && (
+                          <div className="mt-3">
+                            <div className="row g-3">
+                              {presc.reply.medicines.map((m) => (
+                                <div
+                                  key={m.medicineId._id}
+                                  className="col-md-6 col-lg-4"
+                                >
+                                  <div className="card shadow-sm p-3 h-100">
+                                    <h6 className="card-title">
+                                      {m.medicineId.name}
+                                    </h6>
+                                    <p className="mb-1">
+                                      Price: ₹{m.medicineId.price}
+                                    </p>
+                                    <p className="mb-2">
+                                      Qty Suggested: {m.quantity}
+                                    </p>
+                                    <button
+                                      className="btn btn-sm btn-primary w-100"
+                                      onClick={async () => {
+                                        await axios.post(
+                                          `http://localhost:3030/cart/${userId}`,
+                                          {
+                                            medicineId: m.medicineId._id,
+                                            quantity: 1,
+                                          }
+                                        );
+                                        alert("Added to cart!");
+                                      }}
+                                    >
+                                      Add to Cart
+                                    </button>
+                                  </div>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                      )}
+                          </div>
+                        )}
                     </td>
 
                     <td>{new Date(presc.uploadedAt).toLocaleString()}</td>

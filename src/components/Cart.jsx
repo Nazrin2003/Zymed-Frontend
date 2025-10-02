@@ -35,7 +35,7 @@ const Cart = () => {
   };
 
   const deleteItem = async (medicineId) => {
-    await updateQuantity(medicineId, 0); // quantity 0 removes item
+    await updateQuantity(medicineId, 0);
   };
 
   const getTotal = () => {
@@ -46,7 +46,7 @@ const Cart = () => {
   const handleConfirm = async () => {
     try {
       await axios.post(`http://localhost:3030/orders/confirm/${userId}`);
-      navigate("/checkout"); // redirect to form page
+      navigate("/checkout");
     } catch (err) {
       console.error(err);
       alert("Failed to confirm order.");
@@ -54,19 +54,19 @@ const Cart = () => {
   };
 
   return (
-    <div className="bg-light min-vh-100">
+    <div style={{ backgroundColor: "#f8f9fa", minHeight: "100vh", fontFamily: "'Poppins', sans-serif" }}>
       <Nav />
       <div className="container py-5">
-        <h2 className="text-center text-success mb-4">My Cart</h2>
+        <h2 style={{ color: "#1b1f3b" }} className="text-center mb-4">My Cart</h2>
 
         {loading ? (
-          <p className="text-center">Loading cart...</p>
+          <p className="text-center" style={{ color: "#444" }}>Loading cart...</p>
         ) : !cart || cart.items.length === 0 ? (
-          <p className="text-center">Your cart is empty.</p>
+          <p className="text-center" style={{ color: "#444" }}>Your cart is empty.</p>
         ) : (
-          <div className="table-responsive">
-            <table className="table table-bordered table-hover bg-white">
-              <thead className="table-success">
+          <div className="table-responsive shadow-sm" style={{ backgroundColor: "#ffffff", borderRadius: "12px", padding: "20px" }}>
+            <table className="table align-middle">
+              <thead style={{ backgroundColor: "#a8e6cf", color: "#1b1f3b", fontWeight: "600" }}>
                 <tr>
                   <th>Medicine</th>
                   <th>Price</th>
@@ -78,30 +78,81 @@ const Cart = () => {
               </thead>
               <tbody>
                 {cart.items.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.medicineId.name}</td>
-                    <td>₹{item.medicineId.price}</td>
+                  <tr key={index} style={{ borderBottom: "1px solid #ddd" }}>
+                    <td style={{ color: "#1b1f3b", fontWeight: "500" }}>{item.medicineId.name}</td>
+                    <td style={{ color: "#16a34a", fontWeight: "600" }}>₹{item.medicineId.price}</td>
                     <td>
-                      <button className="btn btn-sm btn-outline-secondary me-1"
-                        onClick={() => updateQuantity(item.medicineId._id, item.quantity - 1)}
-                        disabled={item.quantity <= 1}>−</button>
-                      {item.quantity}
-                      <button className="btn btn-sm btn-outline-secondary ms-1"
-                        onClick={() => updateQuantity(item.medicineId._id, item.quantity + 1)}>+</button>
+                      <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                        <button
+                          style={{
+                            backgroundColor: "#f0f0f0",
+                            border: "none",
+                            borderRadius: "5px",
+                            width: "28px",
+                            height: "28px",
+                            cursor: item.quantity <= 1 ? "not-allowed" : "pointer",
+                            color: "#1b1f3b"
+                          }}
+                          onClick={() => updateQuantity(item.medicineId._id, item.quantity - 1)}
+                          disabled={item.quantity <= 1}
+                        >
+                          −
+                        </button>
+                        <span style={{ minWidth: "20px", textAlign: "center" }}>{item.quantity}</span>
+                        <button
+                          style={{
+                            backgroundColor: "#f0f0f0",
+                            border: "none",
+                            borderRadius: "5px",
+                            width: "28px",
+                            height: "28px",
+                            cursor: "pointer",
+                            color: "#1b1f3b"
+                          }}
+                          onClick={() => updateQuantity(item.medicineId._id, item.quantity + 1)}
+                        >
+                          +
+                        </button>
+                      </div>
                     </td>
-                    <td>{item.medicineId.category}</td>
-                    <td>{item.medicineId.manufacturer}</td>
+                    <td style={{ color: "#444" }}>{item.medicineId.category}</td>
+                    <td style={{ color: "#444" }}>{item.medicineId.manufacturer}</td>
                     <td>
-                      <button className="btn btn-sm btn-outline-danger"
-                        onClick={() => deleteItem(item.medicineId._id)}>🗑️</button>
+                      <button
+  style={{
+    backgroundColor: "#ff6b6b",
+    border: "none",
+    borderRadius: "6px",
+    padding: "5px 10px",
+    color: "#fff",
+    cursor: "pointer"
+  }}
+  onClick={() => deleteItem(item.medicineId._id)}
+>
+  <i className="fas fa-trash"></i>
+</button>
+
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <div className="text-end mt-3">
-              <h5>Total: ₹{getTotal()}</h5>
-              <button className="btn btn-primary mt-2" onClick={handleConfirm}>
+            <div style={{ textAlign: "right", marginTop: "20px" }}>
+              <h5 style={{ color: "#1b1f3b" }}>Total: <span style={{ color: "#16a34a" }}>₹{getTotal()}</span></h5>
+              <button
+                style={{
+                  marginTop: "10px",
+                  backgroundColor: "#2563EB",
+                  color: "#ffffff",
+                  border: "none",
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
+                }}
+                onClick={handleConfirm}
+              >
                 Proceed to Checkout
               </button>
             </div>
