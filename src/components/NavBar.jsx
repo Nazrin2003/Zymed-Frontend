@@ -1,73 +1,94 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+const sidebarStyle = {
+  width: "220px",
+  background: "#1f2937",
+  padding: "20px",
+  minHeight: "100vh",
+  position: "fixed",
+  top: 0,
+  left: 0,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between"
+};
+
+const sidebarItemStyle = {
+  display: "block",
+  color: "#fff",
+  padding: "10px 15px",
+  marginBottom: "10px",
+  textDecoration: "none",
+  borderRadius: "6px",
+  backgroundColor: "#4b5563"
+};
 
 const NavBar = () => {
+  const location = useLocation();
   const navigate = useNavigate();
 
-  const navBarStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#1f2937",
-    color: "#fff",
-    padding: "12px 24px",
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1000,
-    boxShadow: "0 2px 8px rgba(0,0,0,0.2)"
-  };
-
-  const brand = {
-    fontSize: "24px",
-    fontWeight: "700",
-    color: "#a8e6cf",
-    letterSpacing: "1px"
-  };
-
-  const navLinks = {
-    display: "flex",
-    gap: "20px",
-    fontWeight: 500
-  };
-
-  const linkStyle = {
-    color: "#fff",
-    textDecoration: "none",
-    transition: "0.2s ease",
-  };
-
-  const buttonStyle = {
-    padding: "8px 16px",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontWeight: "600",
-    color: "#fff",
-    backgroundColor: "#dc2626",
-    transition: "0.2s ease"
-  };
-
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
+    localStorage.clear();
     navigate("/signin");
   };
 
+  const isActive = (path) => location.pathname === path;
+
   return (
-    <div style={navBarStyle}>
-      <div style={brand}>Zymed</div>
-      <div style={navLinks}>
-        <Link to="/phome" style={linkStyle}>Dashboard</Link>
-        <Link to="/orders" style={linkStyle}>Orders</Link>
-        <Link to="/pprescription" style={linkStyle}>Prescriptions</Link>
+    <div style={sidebarStyle}>
+      <div>
+        <h2 style={{ color: "#fff", textAlign: "center", marginBottom: "30px" }}>
+          Zymed
+        </h2>
+        <Link
+          to="/phome"
+          style={{
+            ...sidebarItemStyle,
+            backgroundColor: isActive("/phome") ? "#374151" : "#4b5563"
+          }}
+        >
+          📊 Dashboard
+        </Link>
+        <Link
+          to="/porder"
+          style={{
+            ...sidebarItemStyle,
+            backgroundColor: isActive("/porder") ? "#374151" : "#4b5563"
+          }}
+        >
+          📦 Manage Orders
+        </Link>
+        <Link
+          to="/pprescription"
+          style={{
+            ...sidebarItemStyle,
+            backgroundColor: isActive("/pprescription") ? "#374151" : "#4b5563"
+          }}
+        >
+          💊 Prescription Requests
+        </Link>
+        <Link
+          to="/pnotification"
+          style={{
+            ...sidebarItemStyle,
+            backgroundColor: isActive("/pnotification") ? "#374151" : "#4b5563"
+          }}
+        >
+          🔔 Notifications
+        </Link>
       </div>
       <button
         onClick={handleLogout}
-        style={buttonStyle}
-        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#b91c1c")}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#dc2626")}
+        style={{
+          margin: "20px",
+          padding: "10px",
+          background: "#dc2626",
+          color: "#fff",
+          border: "none",
+          borderRadius: "6px",
+          cursor: "pointer"
+        }}
       >
         Logout
       </button>

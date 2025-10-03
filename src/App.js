@@ -10,6 +10,7 @@ import Checkout from "./components/Checkout";
 import Cprescription from "./components/Cprescription";
 import Pprescription from "./components/Pprescription";
 import PrescriptionVerify from "./components/PrescriptionVerify";
+import POrder from "./components/POrder";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/cprescription" element={<Cprescription/>}/>
 
         <Route path="/phome" element={<Phome />} />
+        <Route path="/porder" element={<POrder />} />
         <Route path="/pprescription" element={<Pprescription />} />
         <Route path="/verify-prescription/:id" element={<PrescriptionVerify />} />
 

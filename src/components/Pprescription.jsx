@@ -96,6 +96,7 @@ const Pprescription = () => {
   return (
     <div style={layout}>
       {/* Sidebar */}
+      
       <div style={sidebar}>
         <div>
           <h2 style={{ color: "#fff", textAlign: "center", marginBottom: "30px" }}>
@@ -104,15 +105,14 @@ const Pprescription = () => {
           <Link to="/phome" style={sidebarItem}>
             📊 Dashboard
           </Link>
-          <Link to="/orders" style={sidebarItem}>
-            📦 Orders
-          </Link>
+          <Link to="/porder" style={sidebarItem}>📦 Manage Orders</Link>
           <Link
             to="/pprescription"
             style={{ ...sidebarItem, backgroundColor: "#374151" }}
           >
             💊 Prescriptions
           </Link>
+          <Link to="/pnotification" style={sidebarItem}>🔔 Notifications</Link>
         </div>
         <button
           onClick={handleLogout}
@@ -129,6 +129,7 @@ const Pprescription = () => {
           Logout
         </button>
       </div>
+
 
       {/* Main Content */}
       <div style={content}>
@@ -213,8 +214,8 @@ const Pprescription = () => {
                             presc.status === "verified"
                               ? "#16a34a"
                               : presc.status === "rejected"
-                              ? "#dc2626"
-                              : "#f59e0b",
+                                ? "#dc2626"
+                                : "#f59e0b",
                         }}
                       >
                         {presc.status}

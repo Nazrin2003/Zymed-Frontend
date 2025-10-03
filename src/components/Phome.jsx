@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import NavBar from "./NavBar"; // adjust path if needed
+
 
 const Phome = () => {
     const [medicines, setMedicines] = useState([]);
@@ -40,29 +42,42 @@ const Phome = () => {
     useEffect(() => {
         fetchMedicines();
         fetchPrescriptions();
+        fetchPendingOrders();
     }, []);
 
- const handleAddOrUpdate = async (e) => {
-  e.preventDefault();
+    const [pendingOrders, setPendingOrders] = useState(0);
 
-  const form = new FormData();
-  for (let key in formData) {
-    form.append(key, formData[key]);
-  }
+    const fetchPendingOrders = async () => {
+        try {
+            const res = await axios.get("http://localhost:3030/orders/pending/count");
+            setPendingOrders(res.data.count);
+        } catch (err) {
+            console.error("Failed to fetch pending orders:", err);
+        }
+    };
 
-  const url = editId
-    ? `http://localhost:3030/medicines/${editId}`
-    : "http://localhost:3030/medicines";
 
-  const method = editId ? "put" : "post";
+    const handleAddOrUpdate = async (e) => {
+        e.preventDefault();
 
-  await axios[method](url, form, {
-    headers: { "Content-Type": "multipart/form-data" }
-  });
+        const form = new FormData();
+        for (let key in formData) {
+            form.append(key, formData[key]);
+        }
 
-  alert(editId ? "Medicine updated" : "Medicine added");
-  fetchMedicines();
-};
+        const url = editId
+            ? `http://localhost:3030/medicines/${editId}`
+            : "http://localhost:3030/medicines";
+
+        const method = editId ? "put" : "post";
+
+        await axios[method](url, form, {
+            headers: { "Content-Type": "multipart/form-data" }
+        });
+
+        alert(editId ? "Medicine updated" : "Medicine added");
+        fetchMedicines();
+    };
 
 
     const handleChange = (e) => {
@@ -179,14 +194,16 @@ const Phome = () => {
     };
 
     return (
-        <div style={layout}>
+        <div style={{ background: "#f8f9fa", minHeight: "100vh", display: "flex" }}>
             {/* Sidebar */}
+            <NavBar />
             <div style={sidebar}>
                 <div>
                     <h2 style={{ color: "#fff", textAlign: "center", marginBottom: "30px" }}>Zymed</h2>
                     <Link to="/phome" style={sidebarItem}>📊 Dashboard</Link>
-                    <Link to="/orders" style={sidebarItem}>📦 Orders</Link>
-                    <Link to="/pprescription" style={sidebarItem}>💊 Prescriptions</Link>
+                    <Link to="/porder" style={sidebarItem}>📦 Manage Orders</Link>
+                    <Link to="/pprescription" style={sidebarItem}>💊 Prescription Requests</Link>
+                    <Link to="/pnotification" style={sidebarItem}>🔔 Notifications</Link>
                 </div>
                 <button
                     onClick={handleLogout}
@@ -203,6 +220,7 @@ const Phome = () => {
                     Logout
                 </button>
             </div>
+
 
             {/* Main Content */}
             <div style={content}>
@@ -231,7 +249,7 @@ const Phome = () => {
                             Medicines: {medicines.length}
                         </div>
                         <div style={{ ...statBox, borderTop: "4px solid #f59e0b" }}>
-                            Orders: 0
+                            Pending Orders: {pendingOrders}
                         </div>
                         <div style={{ ...statBox, borderTop: "4px solid #dc2626" }}>
                             Pending Prescriptions: {pendingPrescriptions.length}
@@ -283,11 +301,11 @@ const Phome = () => {
                             <div className="col-md-4">
                                 <label className="form-label">Medicine Image</label>
                                 <input
-  type="file"
-  name="image"
-  className="form-control"
-  onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
-/>
+                                    type="file"
+                                    name="image"
+                                    className="form-control"
+                                    onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
+                                />
 
 
                             </div>
