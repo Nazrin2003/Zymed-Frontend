@@ -37,7 +37,7 @@ const Nav = () => {
             <Link to="/med" className={`nav-link ${isActive("/med") ? "active" : ""}`}>Medicines</Link>
             <Link to="/cprescription" className={`nav-link ${isActive("/cprescription") ? "active" : ""}`}>Prescription</Link>
             <Link to="/cart" className={`nav-link ${isActive("/cart") ? "active" : ""}`}>Cart</Link>
-            <Link to="/subscriptions" className={`nav-link ${isActive("/subscriptions") ? "active" : ""}`}>Subscriptions</Link>
+            <Link to="/subscribe" className={`nav-link ${isActive("/subscribe") ? "active" : ""}`}>Subscriptions</Link>
             <button className="btn btn-outline-light ms-3" onClick={handleLogout}>Logout</button>
           </div>
         </div>

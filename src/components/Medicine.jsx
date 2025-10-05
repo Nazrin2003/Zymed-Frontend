@@ -15,6 +15,16 @@ const Medicine = () => {
       .then(res => setMedicines(res.data))
       .catch(err => console.error(err));
   }, []);
+  const handleSubscribe = (medicine) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user?.id) {
+      alert("Please log in to subscribe.");
+      return;
+    }
+
+    navigate("/subscribe", { state: { medicine, user } });
+  };
+
 
   const handleAddToCart = async (medicineId) => {
     try {
@@ -25,6 +35,15 @@ const Medicine = () => {
         alert("Please log in to add items to cart.");
         return;
       }
+      const handleSubscribe = (medicine) => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user?.id) {
+          alert("Please log in to subscribe.");
+          return;
+        }
+
+        navigate("/subscribe", { state: { medicine, user } });
+      };
 
       await axios.post(`http://localhost:3030/cart/${userId}`, {
         medicineId,
@@ -136,72 +155,74 @@ const Medicine = () => {
                     <p style={{ color: "#6B7280", fontSize: "13px" }}>Category: {med.category}</p>
 
                     {med.quantity === 0 ? (
-  <button
-    disabled
-    style={{
-      width: "100%",
-      padding: "10px",
-      borderRadius: "10px",
-      border: "none",
-      backgroundColor: "#9ca3af",
-      color: "#ffffff",
-      fontWeight: "600",
-      marginTop: "10px",
-      cursor: "not-allowed"
-    }}
-  >
-    Not Available
-  </button>
-) : med.prescriptionRequired ? (
-  <button
-    style={{
-      width: "100%",
-      padding: "10px",
-      borderRadius: "10px",
-      border: "none",
-      backgroundColor: "#a8e6cf",
-      color: "#1b1f3b",
-      fontWeight: "600",
-      marginTop: "10px"
-    }}
-    onClick={() => window.location.href = "/cprescription"}
-  >
-    Upload Prescription
-  </button>
-) : (
-  <>
-    <button
-      style={{
-        width: "100%",
-        padding: "10px",
-        borderRadius: "10px",
-        border: "none",
-        backgroundColor: "#047857",
-        color: "#ffffff",
-        fontWeight: "600",
-        marginTop: "10px"
-      }}
-      onClick={() => handleAddToCart(med._id)}
-    >
-      Add to Cart
-    </button>
+                      <button
+                        disabled
+                        style={{
+                          width: "100%",
+                          padding: "10px",
+                          borderRadius: "10px",
+                          border: "none",
+                          backgroundColor: "#9ca3af",
+                          color: "#ffffff",
+                          fontWeight: "600",
+                          marginTop: "10px",
+                          cursor: "not-allowed"
+                        }}
+                      >
+                        Not Available
+                      </button>
+                    ) : med.prescriptionRequired ? (
+                      <button
+                        style={{
+                          width: "100%",
+                          padding: "10px",
+                          borderRadius: "10px",
+                          border: "none",
+                          backgroundColor: "#a8e6cf",
+                          color: "#1b1f3b",
+                          fontWeight: "600",
+                          marginTop: "10px"
+                        }}
+                        onClick={() => window.location.href = "/cprescription"}
+                      >
+                        Upload Prescription
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          style={{
+                            width: "100%",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            border: "none",
+                            backgroundColor: "#047857",
+                            color: "#ffffff",
+                            fontWeight: "600",
+                            marginTop: "10px"
+                          }}
+                          onClick={() => handleAddToCart(med._id)}
+                        >
+                          Add to Cart
+                        </button>
 
-    <button
-      style={{
-        width: "100%",
-        padding: "10px",
-        borderRadius: "10px",
-        border: "none",
-        backgroundColor: "#2563EB",
-        color: "#ffffff",
-        fontWeight: "600",
-        marginTop: "8px"
-      }}
-    >
-      Subscribe
-    </button>
-  </>
-)}
+                        <button
+                          style={{
+                            width: "100%",
+                            padding: "10px",
+                            borderRadius: "10px",
+                            border: "none",
+                            backgroundColor: "#2563EB",
+                            color: "#ffffff",
+                            fontWeight: "600",
+                            marginTop: "8px"
+                          }}
+                          onClick={() => handleSubscribe(med)}
+                        >
+                          Subscribe
+                        </button>
+
+                      </>
+                    )}
 
                   </div>
                 </div>

@@ -12,6 +12,7 @@ import Pprescription from "./components/Pprescription";
 import PrescriptionVerify from "./components/PrescriptionVerify";
 import POrder from "./components/POrder";
 import Notification from "./components/Notification";
+import Subscribe from "./components/Subscribe";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/checkout" element={<Checkout/>}/>
         <Route path="/cprescription" element={<Cprescription/>}/>
+        <Route path="/subscribe" element={<Subscribe/>}/>
 
         <Route path="/phome" element={<Phome />} />
         <Route path="/porder" element={<POrder />} />
