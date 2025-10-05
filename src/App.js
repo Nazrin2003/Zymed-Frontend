@@ -11,6 +11,7 @@ import Cprescription from "./components/Cprescription";
 import Pprescription from "./components/Pprescription";
 import PrescriptionVerify from "./components/PrescriptionVerify";
 import POrder from "./components/POrder";
+import Notification from "./components/Notification";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/porder" element={<POrder />} />
         <Route path="/pprescription" element={<Pprescription />} />
         <Route path="/verify-prescription/:id" element={<PrescriptionVerify />} />
+        <Route path="/notification" element={<Notification />} />
 
       </Routes>
     </Router>

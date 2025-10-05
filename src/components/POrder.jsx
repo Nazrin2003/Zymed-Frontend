@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import Nav from "./Nav";
+import Nav from "./NavBar";
 import Footer from "./Footer";
+import NavBar from "./NavBar";
 
 const sidebar = {
   width: "220px",
@@ -70,37 +71,8 @@ const POrder = () => {
   return (
     <div style={{ background: "#f8f9fa", minHeight: "100vh", display: "flex" }}>
       {/* Sidebar */}
-      <div style={sidebar}>
-        <div>
-          <h2 style={{ color: "#fff", textAlign: "center", marginBottom: "30px" }}>
-            Zymed
-          </h2>
-          <Link to="/phome" style={sidebarItem}>
-            📊 Dashboard
-          </Link>
-          <Link to="/porder" style={{ ...sidebarItem, backgroundColor: "#374151" }}>
-            📦 Orders
-          </Link>
-          <Link to="/pprescription" style={sidebarItem}>
-            💊 Prescriptions
-          </Link>
-          <Link to="/pnotification" style={sidebarItem}>🔔 Notifications</Link>
-        </div>
-        <button
-          onClick={handleLogout}
-          style={{
-            margin: "20px",
-            padding: "10px",
-            background: "#dc2626",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer"
-          }}
-        >
-          Logout
-        </button>
-      </div>
+      
+      <NavBar/>
 
       {/* Main Content */}
       <div className="container py-5" style={{ marginLeft: "240px", flex: 1 }}>

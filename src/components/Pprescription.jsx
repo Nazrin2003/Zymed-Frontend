@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import Nav from "./Nav";
+import NavBar from "./NavBar";
 
 const Pprescription = () => {
   const [prescriptions, setPrescriptions] = useState([]);
@@ -36,11 +38,12 @@ const Pprescription = () => {
   };
 
   const layout = {
-    display: "flex",
-    minHeight: "100vh",
-    fontFamily: "Inter, sans-serif",
-    backgroundColor: "#f9fafb",
-  };
+  display: "flex",
+  minHeight: "100vh",
+  fontFamily: "Inter, sans-serif",
+  backgroundColor: "#f9fafb",
+};
+
 
   const sidebar = {
     width: "220px",
@@ -63,9 +66,10 @@ const Pprescription = () => {
   };
 
   const content = {
-    flex: 1,
-    padding: "32px",
-  };
+  flex: 1,
+  padding: "32px",
+  marginLeft: "240px", // 👈 match NavBar width
+};
 
   const boxStyle = {
     color: "#fff",
@@ -97,38 +101,8 @@ const Pprescription = () => {
     <div style={layout}>
       {/* Sidebar */}
       
-      <div style={sidebar}>
-        <div>
-          <h2 style={{ color: "#fff", textAlign: "center", marginBottom: "30px" }}>
-            Zymed
-          </h2>
-          <Link to="/phome" style={sidebarItem}>
-            📊 Dashboard
-          </Link>
-          <Link to="/porder" style={sidebarItem}>📦 Manage Orders</Link>
-          <Link
-            to="/pprescription"
-            style={{ ...sidebarItem, backgroundColor: "#374151" }}
-          >
-            💊 Prescriptions
-          </Link>
-          <Link to="/pnotification" style={sidebarItem}>🔔 Notifications</Link>
-        </div>
-        <button
-          onClick={handleLogout}
-          style={{
-            margin: "20px",
-            padding: "10px",
-            background: "#dc2626",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-          }}
-        >
-          Logout
-        </button>
-      </div>
+     
+      <NavBar/>
 
 
       {/* Main Content */}
@@ -175,71 +149,77 @@ const Pprescription = () => {
           {filteredPrescriptions.length === 0 ? (
             <p>No prescriptions found.</p>
           ) : (
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr style={{ background: "#e5e7eb", textAlign: "left" }}>
-                  <th style={{ padding: "12px" }}>Customer</th>
-                  <th>File</th>
-                  <th>Notes</th>
-                  <th>Status</th>
-                  <th>Uploaded At</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredPrescriptions.map((presc) => (
-                  <tr key={presc._id} style={{ borderBottom: "1px solid #e5e7eb" }}>
-                    <td style={{ padding: "12px" }}>
-                      {presc.userId?.name || "Unknown"}
-                    </td>
-                    <td>
-                      <a
-                        href={`http://localhost:3030/${presc.fileUrl}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View File
-                      </a>
-                    </td>
-                    <td>{presc.notes || "—"}</td>
-                    <td>
-                      <span
-                        style={{
-                          padding: "4px 8px",
-                          borderRadius: "6px",
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                          color: "#fff",
-                          backgroundColor:
-                            presc.status === "verified"
-                              ? "#16a34a"
-                              : presc.status === "rejected"
-                                ? "#dc2626"
-                                : "#f59e0b",
-                        }}
-                      >
-                        {presc.status}
-                      </span>
-                    </td>
-                    <td>{new Date(presc.uploadedAt).toLocaleString()}</td>
-                    <td>
-                      <button
-                        style={{ ...buttonStyle, background: "#16a34a", color: "#fff" }}
-                        onClick={() => navigate(`/verify-prescription/${presc._id}`)}
-                      >
-                        Verify
-                      </button>
-                      <button
-                        style={{ ...buttonStyle, background: "#dc2626", color: "#fff" }}
-                        onClick={() => updateStatus(presc._id, "rejected")}
-                      >
-                        Reject
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+           <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
+  <thead>
+    <tr style={{ background: "#e5e7eb", textAlign: "left" }}>
+      <th style={{ padding: "12px", width: "15%" }}>Customer</th>
+      <th style={{ padding: "12px", width: "15%" }}>File</th>
+      <th style={{ padding: "12px", width: "25%" }}>Notes</th>
+      <th style={{ padding: "12px", width: "10%" }}>Status</th>
+      <th style={{ padding: "12px", width: "20%" }}>Uploaded At</th>
+      <th style={{ padding: "12px", width: "15%" }}>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {filteredPrescriptions.map((presc) => (
+      <tr key={presc._id} style={{ borderBottom: "1px solid #e5e7eb" }}>
+        <td style={{ padding: "12px", wordWrap: "break-word" }}>
+          {presc.userId?.name || "Unknown"}
+        </td>
+        <td style={{ padding: "12px" }}>
+          <a
+            href={`http://localhost:3030/${presc.fileUrl}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#2563eb", textDecoration: "underline" }}
+          >
+            View File
+          </a>
+        </td>
+        <td style={{ padding: "12px", wordWrap: "break-word" }}>
+          {presc.notes || "—"}
+        </td>
+        <td style={{ padding: "12px" }}>
+          <span
+            style={{
+              padding: "4px 8px",
+              borderRadius: "6px",
+              fontSize: "12px",
+              fontWeight: "bold",
+              color: "#fff",
+              backgroundColor:
+                presc.status === "verified"
+                  ? "#16a34a"
+                  : presc.status === "rejected"
+                  ? "#dc2626"
+                  : "#f59e0b",
+            }}
+          >
+            {presc.status}
+          </span>
+        </td>
+        <td style={{ padding: "12px" }}>
+          {new Date(presc.uploadedAt).toLocaleString()}
+        </td>
+        <td style={{ padding: "12px" }}>
+          <button
+            style={{ ...buttonStyle, background: "#16a34a", color: "#fff" }}
+            onClick={() => navigate(`/verify-prescription/${presc._id}`)}
+          >
+            Verify
+          </button>
+          <button
+            style={{ ...buttonStyle, background: "#dc2626", color: "#fff" }}
+            onClick={() => updateStatus(presc._id, "rejected")}
+          >
+            Reject
+          </button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
           )}
         </div>
       </div>

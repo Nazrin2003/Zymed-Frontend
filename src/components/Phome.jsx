@@ -203,7 +203,7 @@ const Phome = () => {
                     <Link to="/phome" style={sidebarItem}>📊 Dashboard</Link>
                     <Link to="/porder" style={sidebarItem}>📦 Manage Orders</Link>
                     <Link to="/pprescription" style={sidebarItem}>💊 Prescription Requests</Link>
-                    <Link to="/pnotification" style={sidebarItem}>🔔 Notifications</Link>
+                    <Link to="notification" style={sidebarItem}>🔔 Notifications</Link>
                 </div>
                 <button
                     onClick={handleLogout}

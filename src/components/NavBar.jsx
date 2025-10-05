@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const sidebarStyle = {
-  width: "220px",
+  width: "240px",
   background: "#1f2937",
   padding: "20px",
   minHeight: "100vh",
@@ -11,20 +11,38 @@ const sidebarStyle = {
   left: 0,
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-between"
+  gap: "30px"
 };
 
-const sidebarItemStyle = {
-  display: "block",
+const sidebarItemBase = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
   color: "#fff",
-  padding: "10px 15px",
+  padding: "12px 18px",
   marginBottom: "10px",
   textDecoration: "none",
-  borderRadius: "6px",
-  backgroundColor: "#4b5563"
+  borderRadius: "8px",
+  fontWeight: "500",
+  transition: "background 0.3s"
 };
 
-const NavBar = () => {
+const activeStyle = {
+  backgroundColor: "#374151",
+  borderLeft: "4px solid #3b82f6"
+};
+
+const badgeStyle = {
+  backgroundColor: "#ef4444",
+  color: "#fff",
+  borderRadius: "50%",
+  padding: "4px 8px",
+  fontSize: "12px",
+  fontWeight: "bold",
+  marginLeft: "10px"
+};
+
+const NavBar = ({ notificationCount = 0 }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -37,15 +55,33 @@ const NavBar = () => {
 
   return (
     <div style={sidebarStyle}>
+      {/* Top Section */}
       <div>
         <h2 style={{ color: "#fff", textAlign: "center", marginBottom: "30px" }}>
           Zymed
         </h2>
+        <button
+          onClick={handleLogout}
+          style={{
+            width: "100%",
+            padding: "10px",
+            background: "#dc2626",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            marginBottom: "20px"
+          }}
+        >
+          🔒 Logout
+        </button>
+
+        {/* Navigation Links */}
         <Link
           to="/phome"
           style={{
-            ...sidebarItemStyle,
-            backgroundColor: isActive("/phome") ? "#374151" : "#4b5563"
+            ...sidebarItemBase,
+            ...(isActive("/phome") ? activeStyle : {})
           }}
         >
           📊 Dashboard
@@ -53,8 +89,8 @@ const NavBar = () => {
         <Link
           to="/porder"
           style={{
-            ...sidebarItemStyle,
-            backgroundColor: isActive("/porder") ? "#374151" : "#4b5563"
+            ...sidebarItemBase,
+            ...(isActive("/porder") ? activeStyle : {})
           }}
         >
           📦 Manage Orders
@@ -62,36 +98,25 @@ const NavBar = () => {
         <Link
           to="/pprescription"
           style={{
-            ...sidebarItemStyle,
-            backgroundColor: isActive("/pprescription") ? "#374151" : "#4b5563"
+            ...sidebarItemBase,
+            ...(isActive("/pprescription") ? activeStyle : {})
           }}
         >
           💊 Prescription Requests
         </Link>
         <Link
-          to="/pnotification"
+          to="/notification"
           style={{
-            ...sidebarItemStyle,
-            backgroundColor: isActive("/pnotification") ? "#374151" : "#4b5563"
+            ...sidebarItemBase,
+            ...(isActive("/pnotification") ? activeStyle : {})
           }}
         >
-          🔔 Notifications
+          <span>🔔 Notifications</span>
+          {notificationCount > 0 && (
+            <span style={badgeStyle}>{notificationCount}</span>
+          )}
         </Link>
       </div>
-      <button
-        onClick={handleLogout}
-        style={{
-          margin: "20px",
-          padding: "10px",
-          background: "#dc2626",
-          color: "#fff",
-          border: "none",
-          borderRadius: "6px",
-          cursor: "pointer"
-        }}
-      >
-        Logout
-      </button>
     </div>
   );
 };
