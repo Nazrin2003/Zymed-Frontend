@@ -9,6 +9,9 @@ const Subscribe = () => {
     const user = state?.user || JSON.parse(localStorage.getItem("user"));
     const [notifyDate, setNotifyDate] = useState("");
     const [subscriptions, setSubscriptions] = useState([]);
+    const [editingSub, setEditingSub] = useState(null);
+    const [editDate, setEditDate] = useState("");
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,6 +27,35 @@ const Subscribe = () => {
         } catch (err) {
             console.error(err);
             alert("Failed to subscribe.");
+        }
+    };
+    const handleEditClick = (sub) => {
+        setEditingSub(sub);
+        setEditDate(sub.notifyDate.split("T")[0]);
+    };
+
+    const handleUpdate = async () => {
+        try {
+            await axios.put(`http://localhost:3030/subscribe/${editingSub._id}`, {
+                notifyDate: editDate
+            });
+            alert("Subscription updated!");
+            setEditingSub(null);
+            fetchSubscriptions();
+        } catch (err) {
+            console.error(err);
+            alert("Failed to update.");
+        }
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://localhost:3030/subscribe/${id}`);
+            alert("Subscription removed.");
+            fetchSubscriptions();
+        } catch (err) {
+            console.error(err);
+            alert("Failed to delete.");
         }
     };
 
@@ -145,6 +177,63 @@ const Subscribe = () => {
                 )}
 
                 {/* How Subscription Works */}
+                {editingSub && (
+  <div style={{
+    backgroundColor: "#ffffff",
+    padding: "20px",
+    borderRadius: "10px",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+    maxWidth: "600px",
+    margin: "0 auto 30px"
+  }}>
+    <h4 style={{ color: "#1b1f3b" }}>Update Subscription</h4>
+    <p><strong>Medicine:</strong> {editingSub.medicineId?.name}</p>
+    <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>
+      New Reminder Date:
+    </label>
+    <input
+      type="date"
+      value={editDate}
+      onChange={(e) => setEditDate(e.target.value)}
+      style={{
+        padding: "8px",
+        borderRadius: "6px",
+        border: "1px solid #ccc",
+        marginBottom: "16px",
+        width: "100%"
+      }}
+    />
+    <div style={{ display: "flex", gap: "10px" }}>
+      <button
+        onClick={handleUpdate}
+        style={{
+          padding: "8px 16px",
+          backgroundColor: "#00769b",
+          color: "#fff",
+          border: "none",
+          borderRadius: "6px",
+          cursor: "pointer"
+        }}
+      >
+        Update
+      </button>
+      <button
+        onClick={() => setEditingSub(null)}
+        style={{
+          padding: "8px 16px",
+          backgroundColor: "#e5e7eb",
+          color: "#374151",
+          border: "none",
+          borderRadius: "6px",
+          cursor: "pointer"
+        }}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+)}
+
                 <div style={{
                     backgroundColor: "#ffffff",
                     borderRadius: "12px",
@@ -179,6 +268,7 @@ const Subscribe = () => {
                                 <th style={{ padding: "12px", fontWeight: "600" }}>Medicine</th>
                                 <th style={{ padding: "12px", fontWeight: "600" }}>Notify Date</th>
                                 <th style={{ padding: "12px", fontWeight: "600" }}>Status</th>
+                                <th style={{ padding: "12px", fontWeight: "600" }}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -202,11 +292,43 @@ const Subscribe = () => {
                                                 {status}
                                             </span>
                                         </td>
+                                        <td style={{ padding: "12px" }}>
+                                            <button
+                                                onClick={() => handleEditClick(sub)}
+                                                style={{
+                                                    marginRight: "8px",
+                                                    padding: "6px 10px",
+                                                    backgroundColor: "#2563eb",
+                                                    color: "#fff",
+                                                    border: "none",
+                                                    borderRadius: "6px",
+                                                    fontSize: "13px",
+                                                    cursor: "pointer"
+                                                }}
+                                            >
+                                                Update
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(sub._id)}
+                                                style={{
+                                                    padding: "6px 10px",
+                                                    backgroundColor: "#dc2626",
+                                                    color: "#fff",
+                                                    border: "none",
+                                                    borderRadius: "6px",
+                                                    fontSize: "13px",
+                                                    cursor: "pointer"
+                                                }}
+                                            >
+                                                Remove
+                                            </button>
+                                        </td>
                                     </tr>
                                 );
                             })}
                         </tbody>
                     </table>
+
                 )}
             </div>
         </div>
