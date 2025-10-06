@@ -48,7 +48,7 @@ const NavBar = ({ notificationCount = 0 }) => {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/signin");
+    navigate("/");
   };
 
   const isActive = (path) => location.pathname === path;

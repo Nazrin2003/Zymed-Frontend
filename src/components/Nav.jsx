@@ -36,9 +36,12 @@ const Nav = () => {
             <Link to="/home" className={`nav-link ${isActive("/home") ? "active" : ""}`}>Home</Link>
             <Link to="/med" className={`nav-link ${isActive("/med") ? "active" : ""}`}>Medicines</Link>
             <Link to="/cprescription" className={`nav-link ${isActive("/cprescription") ? "active" : ""}`}>Prescription</Link>
-            <Link to="/cart" className={`nav-link ${isActive("/cart") ? "active" : ""}`}>Cart</Link>
             <Link to="/subscribe" className={`nav-link ${isActive("/subscribe") ? "active" : ""}`}>Subscriptions</Link>
+            <Link to="/cart" className={`nav-link ${isActive("/cart") ? "active" : ""}`}>Cart</Link>
+            <Link to="/corder" className={`nav-link ${isActive("/corder") ? "active" : ""}`}>Order</Link>
             <button className="btn btn-outline-light ms-3" onClick={handleLogout}>Logout</button>
+
+
           </div>
         </div>
       </div>

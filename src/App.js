@@ -13,6 +13,7 @@ import PrescriptionVerify from "./components/PrescriptionVerify";
 import POrder from "./components/POrder";
 import Notification from "./components/Notification";
 import Subscribe from "./components/Subscribe";
+import Corder from "./components/Corders";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/home" element={<CHome />} />
         <Route path="/med" element={<Medicine/>}/>
         <Route path="/cart" element={<Cart/>}/>
+        <Route path="/corder" element={<Corder/>}/>
         <Route path="/checkout" element={<Checkout/>}/>
         <Route path="/cprescription" element={<Cprescription/>}/>
         <Route path="/subscribe" element={<Subscribe/>}/>
