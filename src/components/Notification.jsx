@@ -100,7 +100,7 @@ const Notification = () => {
         </div>
 
         {/* 📧 Email Notification Button */}
-        <div style={{ marginBottom: "20px" }}>
+        {/* <div style={{ marginBottom: "20px" }}>
           <button
             className="btn btn-danger"
             onClick={sendEmailNotification}
@@ -108,7 +108,7 @@ const Notification = () => {
           >
             {emailSent ? "Email Sent ✅" : "Send Email Notification 📧"}
           </button>
-        </div>
+        </div> */}
 
         {/* 💀 Expired Medicines */}
         <div style={cardStyle}>

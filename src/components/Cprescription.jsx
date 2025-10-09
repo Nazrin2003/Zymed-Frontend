@@ -74,7 +74,7 @@ const Cprescription = () => {
   }, [userId]);
 
   return (
-    <div style={{ background: "#f8f9fa", minHeight: "100vh" }}>
+    <div style={{ background: "#F7FAFC", minHeight: "100vh", fontFamily: "'Inter', sans-serif" }}>
       <Nav />
 
       {/* Page Header */}
@@ -88,21 +88,21 @@ const Cprescription = () => {
           color: "white",
         }}
       >
-        <h1 style={{ fontWeight: "bold", fontSize: "2.5rem" }}>Upload Prescription</h1>
-        <p style={{ opacity: 0.9 }}>Easily upload, track, and reorder your prescriptions</p>
+        <h1 style={{ fontWeight: "bold", fontSize: "2.8rem", textShadow: "2px 2px 4px rgba(0,0,0,0.6)", margin: 0 }}>Upload Prescription</h1>
+        <p style={{ opacity: 0.9, fontSize: "1.1rem", marginTop: "10px" }}>Easily upload, track, and reorder your prescriptions</p>
       </div>
 
 
       <div className="container py-5">
         {/* Upload Form */}
-        <div className="card shadow-sm border-0 mb-5" style={{ background: "#ffffff" }}>
+        <div className="card shadow-sm border-0 mb-5" style={{ background: "#ffffff", borderRadius: "12px" }}>
           <div className="card-body p-4">
-            <h4 className="text-dark mb-4" style={{ color: "#1b1f3b" }}>
+            <h4 className="text-dark mb-4" style={{ color: "#2D3748", fontSize: "1.5rem", fontWeight: "600" }}>
               Upload New Prescription
             </h4>
             <form onSubmit={handleUpload}>
               <div className="mb-3">
-                <label className="form-label fw-semibold" style={{ color: "#444" }}>
+                <label className="form-label fw-semibold" style={{ color: "#4A5568", marginBottom: "8px" }}>
                   Choose Prescription File
                 </label>
                 <input
@@ -110,10 +110,11 @@ const Cprescription = () => {
                   className="form-control"
                   onChange={handleFileChange}
                   required
+                  style={{ borderRadius: "8px", padding: "10px 15px", border: "1px solid #E2E8F0" }}
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label fw-semibold" style={{ color: "#444" }}>
+                <label className="form-label fw-semibold" style={{ color: "#4A5568", marginBottom: "8px" }}>
                   Additional Notes
                 </label>
                 <textarea
@@ -121,23 +122,28 @@ const Cprescription = () => {
                   rows="3"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
+                  style={{ borderRadius: "8px", padding: "10px 15px", border: "1px solid #E2E8F0" }}
                 />
               </div>
               <button
                 type="submit"
                 className="btn w-100 fw-semibold"
                 style={{
-                  background: "#2563EB",
+                  background: "linear-gradient(to right, #4299E1, #63B3ED)",
                   color: "#fff",
                   borderRadius: "8px",
-                  transition: "0.3s",
+                  transition: "background 0.3s ease, transform 0.2s ease",
+                  border: "none",
+                  padding: "12px 25px",
+                  fontSize: "1.1rem",
+                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
                 }}
               >
                 Upload Prescription
               </button>
             </form>
             {status && (
-              <p className="mt-3 text-center fw-semibold" style={{ color: "#16a34a" }}>
+              <p className="mt-3 text-center fw-semibold" style={{ color: "#38A169", fontSize: "1rem" }}>
                 {status}
               </p>
             )}
@@ -146,54 +152,62 @@ const Cprescription = () => {
 
         {/* Previous Prescriptions */}
         <h3
-          className="mb-3 fw-bold"
-          style={{ color: "#1b1f3b", borderBottom: "3px solid #a8e6cf", display: "inline-block" }}
+          className="mb-4 fw-bold"
+          style={{
+            color: "#2D3748",
+            borderBottom: "3px solid #68D391",
+            display: "inline-block",
+            paddingBottom: "5px",
+            fontSize: "2rem"
+          }}
         >
           Your Previous Prescriptions
         </h3>
 
         {prescriptions.length === 0 ? (
-          <p style={{ color: "#444" }}>No prescriptions uploaded yet.</p>
+          <p style={{ color: "#4A5568", fontSize: "1.1rem" }}>No prescriptions uploaded yet.</p>
         ) : (
-          <div className="table-responsive shadow-sm rounded">
-  <table className="table align-middle bg-white border">
-    <thead style={{ background: "#a8e6cf" }}>
+          <div className="table-responsive shadow-sm rounded" style={{ borderRadius: "12px", overflow: "hidden" }}>
+  <table className="table align-middle bg-white border" style={{ borderCollapse: "separate", borderSpacing: "0 10px", margin: "0", width: "100%" }}>
+    <thead style={{ background: "#EBF8FF" }}>
       <tr>
-        <th style={{ width: "10%" }}>File</th>
-        <th style={{ width: "15%" }}>Notes</th>
-        <th style={{ width: "55%" }}>Status / Medicines</th>
-        <th style={{ width: "20%" }}>Uploaded At</th>
+        <th style={{ width: "10%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>File</th>
+        <th style={{ width: "15%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>Notes</th>
+        <th style={{ width: "55%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>Status / Medicines</th>
+        <th style={{ width: "20%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>Uploaded At</th>
       </tr>
     </thead>
     <tbody>
       {prescriptions.map((presc) => (
-        <tr key={presc._id}>
-          <td>
+        <tr key={presc._id} style={{ background: "#fff", marginBottom: "10px", borderRadius: "8px", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
+          <td style={{ padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
             <a
               href={`http://localhost:3030/${presc.fileUrl}`}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: "#2563EB", fontWeight: "500", wordBreak: "break-word" }}
+              style={{ color: "#4299E1", fontWeight: "500", wordBreak: "break-word", textDecoration: "none" }}
             >
               View File
             </a>
           </td>
-          <td style={{ color: "#444", wordBreak: "break-word" }}>
+          <td style={{ color: "#4A5568", wordBreak: "break-word", padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
             {presc.notes || "—"}
           </td>
-          <td>
+          <td style={{ padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
             <span
               className="badge px-3 py-2"
               style={{
                 background:
                   presc.status === "verified"
-                    ? "#16a34a"
+                    ? "#38A169"
                     : presc.status === "rejected"
-                      ? "#dc2626"
-                      : "#f59e0b",
+                      ? "#E53E3E"
+                      : "#ED8936",
                 color: "#fff",
-                fontSize: "0.9rem",
-                borderRadius: "6px",
+                fontSize: "0.85rem",
+                borderRadius: "9999px",
+                padding: "8px 12px",
+                fontWeight: "600"
               }}
             >
               {presc.status}
@@ -207,24 +221,28 @@ const Cprescription = () => {
                       <div key={m.medicineId._id} className="col-md-6 col-lg-4">
                         <div
                           className="card shadow-sm h-100"
-                          style={{ border: "1px solid #e5e7eb" }}
+                          style={{ border: "1px solid #E2E8F0", borderRadius: "10px", boxShadow: "0 2px 10px rgba(0,0,0,0.08)" }}
                         >
-                          <div className="card-body">
-                            <h6 className="fw-bold" style={{ color: "#1b1f3b" }}>
+                          <div className="card-body p-3">
+                            <h6 className="fw-bold mb-2" style={{ color: "#2D3748", fontSize: "1.1rem" }}>
                               {m.medicineId.name}
                             </h6>
-                            <p className="mb-1" style={{ color: "#444" }}>
+                            <p className="mb-1" style={{ color: "#4A5568", fontSize: "0.95rem" }}>
                               Price: ₹{m.medicineId.price}
                             </p>
-                            <p className="mb-2" style={{ color: "#444" }}>
+                            <p className="mb-3" style={{ color: "#4A5568", fontSize: "0.95rem" }}>
                               Qty Suggested: {m.quantity}
                             </p>
                             <button
                               className="btn w-100 fw-semibold"
                               style={{
-                                background: "#2563EB",
+                                background: "linear-gradient(to right, #4299E1, #63B3ED)",
                                 color: "#fff",
                                 borderRadius: "6px",
+                                border: "none",
+                                padding: "8px 15px",
+                                fontSize: "0.95rem",
+                                transition: "background 0.3s ease, transform 0.2s ease",
                               }}
                               onClick={async () => {
                                 await axios.post(
@@ -247,7 +265,7 @@ const Cprescription = () => {
                 </div>
               )}
           </td>
-          <td style={{ color: "#444", whiteSpace: "nowrap" }}>
+          <td style={{ color: "#4A5568", whiteSpace: "nowrap", padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
             {new Date(presc.uploadedAt).toLocaleString()}
           </td>
         </tr>

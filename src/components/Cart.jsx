@@ -3,6 +3,7 @@ import axios from "axios";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
+import '../styles/cart.css'; // Import the custom styles
 
 const Cart = () => {
   const [cart, setCart] = useState(null);
@@ -23,7 +24,7 @@ const Cart = () => {
   };
 
   const updateQuantity = async (medicineId, newQty) => {
-    if (newQty < 1) return;
+    if (newQty < 1) return; // Prevent quantity from going below 1
     try {
       await axios.put(`http://localhost:3030/cart/${userId}`, {
         medicineId,
@@ -37,6 +38,7 @@ const Cart = () => {
 
   const handleRemoveItem = async (medicineId) => {
     try {
+      // Sending quantity: 0 typically signals removal in many APIs
       await axios.put(`http://localhost:3030/cart/${userId}`, {
         medicineId,
         quantity: 0
@@ -60,22 +62,22 @@ const Cart = () => {
   };
 
   return (
-    <div style={{ background: "#f8f9fa", minHeight: "100vh" }}>
+    <div style={{ background: "#f8f9fa", minHeight: "100vh" }}> {/* This style will be overridden by cart.css */}
       <Nav />
       <div className="container py-5">
-        <h2 className="mb-4 fw-bold" style={{ color: "#1b1f3b" }}>
+        <h2 className="mb-4 fw-bold" style={{ color: "#1b1f3b" }}> {/* This style will be overridden by cart.css */}
           Your Cart
         </h2>
 
         {loading ? (
           <p>Loading cart...</p>
         ) : !cart?.items?.length ? (
-          <p style={{ color: "#444" }}>Your cart is empty.</p>
+          <p style={{ color: "#444" }}>Your cart is empty.</p> 
         ) : (
           <>
             <div className="table-responsive shadow-sm rounded mb-4">
               <table className="table align-middle bg-white border">
-                <thead style={{ background: "#a8e6cf" }}>
+                <thead style={{ background: "#a8e6cf" }}> 
                   <tr>
                     <th>Image</th>
                     <th>Medicine</th>
@@ -120,10 +122,10 @@ const Cart = () => {
                             </div>
                           )}
                         </td>
-                        <td style={{ color: "#1b1f3b", fontWeight: "500" }}>
+                        <td style={{ color: "#1b1f3b", fontWeight: "500" }}> {/* This style will be overridden by cart.css */}
                           {med?.name || "Unknown"}
                         </td>
-                        <td style={{ color: "#444" }}>₹{med?.price || "—"}</td>
+                        <td style={{ color: "#444" }}>₹{med?.price || "—"}</td> {/* This style will be overridden by cart.css */}
                         <td>
                           <div className="d-flex align-items-center gap-2">
                             <button
@@ -141,7 +143,7 @@ const Cart = () => {
                             </button>
                           </div>
                         </td>
-                        <td style={{ color: "#444" }}>
+                        <td style={{ color: "#444" }}> {/* This style will be overridden by cart.css */}
                           ₹{(med?.price || 0) * item.quantity}
                         </td>
                         <td>
@@ -159,10 +161,10 @@ const Cart = () => {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan="4" className="text-end fw-bold" style={{ color: "#1b1f3b" }}>
+                    <td colSpan="4" className="text-end fw-bold" style={{ color: "#1b1f3b" }}> {/* This style will be overridden by cart.css */}
                       Total:
                     </td>
-                    <td className="fw-bold" style={{ color: "#1b1f3b" }}>
+                    <td className="fw-bold" style={{ color: "#1b1f3b" }}> {/* This style will be overridden by cart.css */}
                       ₹{calculateTotal()}
                     </td>
                     <td></td>
@@ -174,7 +176,7 @@ const Cart = () => {
             <div className="text-end">
               <button
                 className="btn fw-semibold"
-                style={{ background: "#2563EB", color: "#fff", borderRadius: "8px" }}
+                style={{ background: "#2563EB", color: "#fff", borderRadius: "8px" }} // This style will be overridden by cart.css
                 onClick={() => navigate("/checkout")}
               >
                 Proceed to Checkout

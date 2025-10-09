@@ -1,0 +1,206 @@
+/* src/styles/checkout.css */
+
+/* --- General Page & Body Styles --- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif; /* A clean, modern sans-serif font */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Main content wrapper */
+div[style*="background: #f8f9fa"] { /* Target the outermost div with inline background */
+  background-color: #F7FAFC !important; /* A light, soft blue-gray background for the page */
+  min-height: 100vh;
+}
+
+.container.py-5 {
+  padding-top: 50px !important;
+  padding-bottom: 50px !important;
+  max-width: 900px; /* Constrain content width for better readability */
+  margin: 0 auto;
+}
+
+/* --- Page Heading Styling --- */
+h2.mb-4.fw-bold {
+  color: #2D3748 !important; /* Darker, professional text for headings */
+  font-size: 2.5rem; /* Larger, more impactful heading */
+  font-weight: 700 !important; /* Ensure bold */
+  margin-bottom: 30px !important;
+  border-bottom: 3px solid #63B3ED; /* A subtle, modern underline */
+  display: inline-block; /* Makes the underline fit the text */
+  padding-bottom: 8px;
+}
+
+/* --- Loading Message --- */
+.text-center.text-muted.mt-4 { /* Targeted loading message */
+  color: #4A5568 !important;
+  font-size: 1.1rem;
+  margin-top: 30px !important;
+  font-weight: 500;
+}
+
+/* --- Card Styling (Order Summary & Form) --- */
+.card.mb-4.shadow-sm,
+form.card.shadow-sm.p-4 {
+  border: none !important; /* Remove default card border */
+  border-radius: 16px !important; /* More pronounced rounded corners */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important; /* Deeper, softer shadow */
+  background-color: #FFFFFF !important; /* Explicit white background */
+  margin-bottom: 30px !important; /* Spacing between cards and info section */
+}
+
+/* Order Summary Card Body */
+.card-body {
+  padding: 30px !important; /* More internal padding */
+}
+
+.card-body h5.fw-bold { /* Order Summary heading */
+  color: #2D3748 !important;
+  font-size: 1.6rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 25px !important;
+}
+
+.card-body .d-flex.justify-content-between.mb-2 { /* Individual item lines */
+  color: #4A5568 !important;
+  font-size: 0.98rem;
+  margin-bottom: 12px !important;
+}
+
+.card-body .d-flex.justify-content-between.mb-2 strong {
+  color: #2D3748;
+  font-weight: 600;
+}
+
+.card-body hr {
+  border-top: 1px solid #E2E8F0 !important; /* Lighter horizontal rule */
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+}
+
+.card-body .d-flex.justify-content-between.fw-bold { /* Total Amount line */
+  font-size: 1.15rem;
+  color: #2D3748 !important;
+  font-weight: 700 !important;
+  padding-top: 10px;
+}
+.card-body .d-flex.justify-content-between.fw-bold div:last-child {
+  color: #007BFF !important; /* Highlight total amount */
+}
+
+
+/* --- Delivery Details Form Styling --- */
+form.card.shadow-sm.p-4 {
+  padding: 30px !important; /* Consistent padding */
+}
+
+form h5.fw-bold { /* Delivery Details heading */
+  color: #2D3748 !important;
+  font-size: 1.6rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 25px !important;
+}
+
+form .form-label {
+  color: #2D3748 !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+  font-size: 0.95rem;
+}
+
+form .form-control {
+  padding: 12px 15px !important; /* More generous padding for inputs */
+  border-radius: 8px !important; /* More rounded corners */
+  border: 1px solid #CBD5E0 !important; /* Lighter, subtle border */
+  font-size: 1rem !important;
+  color: #2D3748;
+  background-color: #FDFDFD !important; /* Slightly off-white background */
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Subtle inner shadow */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+form .form-control:focus {
+  outline: none;
+  border-color: #007BFF !important; /* Highlight border on focus */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25) !important; /* Glow effect on focus */
+}
+
+/* Confirm & Place Order Button */
+form button[type="submit"] {
+  background-color: #007BFF !important; /* Primary blue */
+  color: #fff !important;
+  border-radius: 8px !important;
+  padding: 14px 30px !important; /* Larger, more prominent button */
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3); /* Soft shadow */
+  border: none !important;
+}
+
+form button[type="submit"]:hover {
+  background-color: #0056B3 !important; /* Darker blue on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4); /* Enhanced shadow on hover */
+}
+
+/* Status Message */
+form p.mt-3.text-center.fw-semibold {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  margin-top: 20px !important;
+}
+/* Specific colors are handled by inline style for now, but if you wanted to move them here:
+form p.mt-3.text-center.fw-semibold[style*="color: #16a34a"] { color: #38A169 !important; }
+form p.mt-3.text-center.fw-semibold[style*="color: #e53e3e"] { color: #E53E3E !important; }
+*/
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .container.py-5 {
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  h2.mb-4.fw-bold {
+    font-size: 2rem;
+    text-align: center;
+    border-bottom: none !important;
+    margin-bottom: 25px !important;
+    display: block;
+    padding-bottom: 0;
+  }
+
+  .card.mb-4.shadow-sm,
+  form.card.shadow-sm.p-4 {
+    border-radius: 12px !important; /* Slightly smaller border-radius for mobile */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1) !important;
+    margin-bottom: 25px !important;
+  }
+
+  .card-body,
+  form.card.shadow-sm.p-4 {
+    padding: 20px !important; /* Reduced padding on mobile */
+  }
+
+  .card-body h5.fw-bold,
+  form h5.fw-bold {
+    font-size: 1.4rem !important;
+    text-align: center;
+    margin-bottom: 20px !important;
+  }
+
+  .card-body .d-flex.justify-content-between.fw-bold {
+    font-size: 1.05rem;
+  }
+
+  form button[type="submit"] {
+    font-size: 1rem !important;
+    padding: 12px 20px !important;
+  }
+}

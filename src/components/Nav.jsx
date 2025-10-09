@@ -18,7 +18,7 @@ const Nav = () => {
     <nav className="navbar navbar-expand-lg">
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
-          <h1 style={{ fontSize: "2.2rem", margin: 0 }}>Zymed</h1>
+          <h1 style={{ fontSize: "3.2rem", margin: 0 }}><b>Zymed</b></h1>
         </Link>
         <button
           className="navbar-toggler"
@@ -40,8 +40,6 @@ const Nav = () => {
             <Link to="/cart" className={`nav-link ${isActive("/cart") ? "active" : ""}`}>Cart</Link>
             <Link to="/corder" className={`nav-link ${isActive("/corder") ? "active" : ""}`}>Order</Link>
             <button className="btn btn-outline-light ms-3" onClick={handleLogout}>Logout</button>
-
-
           </div>
         </div>
       </div>
@@ -50,4 +48,3 @@ const Nav = () => {
 };
 
 export default Nav;
-

@@ -1,13 +1,120 @@
-.footer-section {
-  font-size: 0.95rem;
+Footer Container
+footer {
+  /* Inline styles already set: background-color, paddingTop, paddingBottom, fontSize */
+  font-family: 'Inter', sans-serif; /* Consistent modern font */
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow above footer */
+  border-top: 1px solid rgba(255, 255, 255, 0.05); /* Very light top border */
 }
 
-.footer-link {
-  color: #ccc;
-  text-decoration: none;
+/* Constrain content width for better readability */
+footer .container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
-.footer-link:hover {
-  color: #fff;
-  text-decoration: underline;
+/* Branding Section - "Zymed" heading */
+footer .text-success.fw-bold {
+  color: #74c8be !important; /* A vibrant green for the brand name, overriding Bootstrap's text-success if needed */
+  font-size: 2.2rem; /* Slightly larger than default h4 */
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3); /* Subtle text shadow */
+  transition: color 0.3s ease;
+}
+
+footer .text-success.fw-bold:hover {
+  color: #81E6D9 !important; /* Lighter green on hover */
+}
+
+/* General paragraph text in the footer */
+footer p {
+  line-height: 1.6;
+  color: #A0AEC0; /* Slightly darker light gray for general text */
+  margin-bottom: 0.75rem;
+}
+
+/* Headings in Quick Links and Contact Us sections */
+footer h5 {
+  /* Inline styles already set: fontWeight, marginBottom */
+  color: #EDF2F7; /* Lighter color for headings */
+  position: relative;
+  padding-bottom: 5px; /* Space for pseudo-element underline */
+  font-size: 1.25rem;
+}
+
+footer h5::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px; /* Short underline */
+  height: 2px;
+  background-color: #63B3ED; /* Blue underline */
+  transition: width 0.3s ease;
+}
+
+footer h5:hover::after {
+  width: 70px; /* Expand underline on hover */
+}
+
+/* List items in quick links */
+footer .list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+footer .list-unstyled li {
+  margin-bottom: 0.8rem;
+}
+
+/* Links in the footer */
+footer .list-unstyled a {
+  /* Inline styles already set: color, textDecoration */
+  color: #A0AEC0; /* Keep the existing light gray color */
+  transition: color 0.3s ease, transform 0.2s ease;
+  display: inline-block; /* Allows transform on hover */
+}
+
+footer .list-unstyled a:hover {
+  color: #63B3ED; /* Vibrant blue on hover */
+  text-decoration: none; /* Ensure no underline on hover */
+  transform: translateX(5px); /* Slight slide effect */
+}
+
+/* Horizontal Rule */
+footer hr {
+  /* Inline styles already set: borderColor */
+  border: none; /* Remove default border */
+  border-top: 1px solid rgba(160, 174, 192, 0.3); /* Lighter, subtle line */
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Copyright Text */
+footer .text-center small {
+  color: #A0AEC0;
+  font-size: 0.88rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+  footer .col-md-4 {
+    text-align: center; /* Center content on small screens */
+  }
+
+  footer h5::after {
+    left: 50%; /* Center underline on small screens */
+    transform: translateX(-50%);
+  }
+
+  footer .list-unstyled {
+    text-align: center; /* Center list items */
+  }
+
+  footer .list-unstyled a {
+    transform: none; /* Remove slide effect for smaller screens */
+  }
 }
