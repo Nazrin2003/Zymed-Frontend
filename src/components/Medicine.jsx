@@ -88,7 +88,7 @@ const Medicine = () => {
           </div>
         </div>
 
-        <div className="container py-5">
+        <div className="container-fluid px-3 px-md-4 py-5" style={{ maxWidth: "1400px", margin: "0 auto" }}>
           {/* Search Bar */}
           <div className="d-flex justify-content-center mb-5">
             <div style={{
@@ -264,7 +264,7 @@ const Medicine = () => {
           {/* Products Grid */}
           <div className="row g-4">
             {filteredMedicines.map((med) => (
-              <div key={med._id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+              <div key={med._id} className="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <div
                   style={{
                     backgroundColor: "#ffffff",
@@ -289,9 +289,9 @@ const Medicine = () => {
                     e.currentTarget.style.borderColor = "#f3f4f6";
                   }}
                 >
-                  <div style={{ padding: "15px", flex: 1, display: "flex", flexDirection: "column" }}>
+                  <div style={{ padding: "24px", flex: 1, display: "flex", flexDirection: "column" }}>
                     {/* Medicine Image */}
-                    <div style={{ position: "relative", marginBottom: "15px" }}>
+                    <div style={{ position: "relative", marginBottom: "18px" }}>
                       {med.imageUrl ? (
                         <img
                           src={`http://localhost:3030/${med.imageUrl}`}

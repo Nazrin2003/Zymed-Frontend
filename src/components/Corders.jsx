@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Nav from "./Nav";
 import Footer from "./Footer";
-// No import for CSS file as per "dont use css folder"
 
 const Corder = () => {
   const [orders, setOrders] = useState([]);
@@ -220,111 +219,501 @@ const Corder = () => {
     if (userId) fetchOrders();
   }, [userId]);
 
-  const filteredOrders = orders.filter(order =>
-    filterStatus === "all" ? true : order.status === filterStatus
-  );
+  const filteredOrders = orders
+    .filter(order => filterStatus === "all" ? true : order.status === filterStatus)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort by newest first
 
   return (
-    <div style={styles.pageContainer}>
-      <Nav />
-      <div style={styles.mainContentContainer}>
-        <h2 style={styles.pageHeading}>
-          Your Orders
-        </h2>
-
-        {/* Filter Dropdown */}
-        <div style={styles.filterContainer}>
-          <label htmlFor="statusFilter" style={styles.filterLabel}>
-            Filter by Status:
-          </label>
-          <select
-            id="statusFilter"
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            style={styles.filterSelect}
-          >
-            <option value="all">All</option>
-            <option value="pending">Pending</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="shipped">Shipped</option>
-            <option value="delivered">Delivered</option>
-          </select>
+    <>
+      <style>{`
+        .order-card {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .order-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        }
+        
+        .filter-btn {
+          transition: all 0.2s ease;
+        }
+        
+        .filter-btn:hover {
+          transform: translateY(-2px);
+        }
+        
+        .status-badge {
+          animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        
+        .loading-spinner {
+          width: 50px;
+          height: 50px;
+          border: 4px solid #e5e7eb;
+          border-top: 4px solid #3b82f6;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
+      
+      <div style={{ background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)", minHeight: "100vh" }}>
+        <Nav />
+        
+        {/* Hero Header */}
+        <div style={{
+          backgroundImage: `linear-gradient(135deg, rgba(27, 31, 59, 0.9) 0%, rgba(168, 230, 207, 0.7) 100%), url('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=2070')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          padding: "100px 20px",
+          textAlign: "center",
+          color: "white",
+          marginBottom: "40px"
+        }}>
+          <h1 style={{ 
+            fontSize: "2.8rem", 
+            fontWeight: "700", 
+            marginBottom: "12px",
+            textShadow: "2px 4px 8px rgba(0,0,0,0.3)",
+            letterSpacing: "-0.5px"
+          }}>
+            📦 My Orders
+          </h1>
+          <p style={{ fontSize: "1.15rem", opacity: 0.95, margin: 0 }}>
+            Track and manage your medicine orders
+          </p>
         </div>
 
-        {loading ? (
-          <p style={styles.messageText}>Loading orders...</p>
-        ) : filteredOrders.length === 0 ? (
-          <p style={styles.messageText}>No orders found for selected status.</p>
-        ) : (
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px 60px" }}>
+          {/* Stats and Filter Section */}
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", 
+            gap: "20px", 
+            marginBottom: "40px" 
+          }}>
+            <div 
+              className="filter-btn"
+              onClick={() => setFilterStatus("all")}
+              style={{
+                background: filterStatus === "all" 
+                  ? "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)" 
+                  : "#ffffff",
+                color: filterStatus === "all" ? "#fff" : "#1e293b",
+                padding: "24px",
+                borderRadius: "16px",
+                cursor: "pointer",
+                boxShadow: filterStatus === "all" 
+                  ? "0 8px 20px rgba(59, 130, 246, 0.4)" 
+                  : "0 4px 16px rgba(0, 0, 0, 0.08)",
+                border: filterStatus === "all" ? "none" : "2px solid #e2e8f0"
+              }}
+            >
+              <div style={{ fontSize: "32px", marginBottom: "8px" }}>📊</div>
+              <div style={{ fontSize: "28px", fontWeight: "700", marginBottom: "4px" }}>
+                {orders.length}
+              </div>
+              <div style={{ fontSize: "14px", opacity: 0.9, fontWeight: "500" }}>
+                Total Orders
+              </div>
+            </div>
+
+            <div 
+              className="filter-btn"
+              onClick={() => setFilterStatus("pending")}
+              style={{
+                background: filterStatus === "pending" 
+                  ? "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)" 
+                  : "#ffffff",
+                color: filterStatus === "pending" ? "#fff" : "#1e293b",
+                padding: "24px",
+                borderRadius: "16px",
+                cursor: "pointer",
+                boxShadow: filterStatus === "pending" 
+                  ? "0 8px 20px rgba(245, 158, 11, 0.4)" 
+                  : "0 4px 16px rgba(0, 0, 0, 0.08)",
+                border: filterStatus === "pending" ? "none" : "2px solid #e2e8f0"
+              }}
+            >
+              <div style={{ fontSize: "32px", marginBottom: "8px" }}>⏳</div>
+              <div style={{ fontSize: "28px", fontWeight: "700", marginBottom: "4px" }}>
+                {orders.filter(o => o.status === "pending").length}
+              </div>
+              <div style={{ fontSize: "14px", opacity: 0.9, fontWeight: "500" }}>
+                Pending
+              </div>
+            </div>
+
+            <div 
+              className="filter-btn"
+              onClick={() => setFilterStatus("confirmed")}
+              style={{
+                background: filterStatus === "confirmed" 
+                  ? "linear-gradient(135deg, #10b981 0%, #059669 100%)" 
+                  : "#ffffff",
+                color: filterStatus === "confirmed" ? "#fff" : "#1e293b",
+                padding: "24px",
+                borderRadius: "16px",
+                cursor: "pointer",
+                boxShadow: filterStatus === "confirmed" 
+                  ? "0 8px 20px rgba(16, 185, 129, 0.4)" 
+                  : "0 4px 16px rgba(0, 0, 0, 0.08)",
+                border: filterStatus === "confirmed" ? "none" : "2px solid #e2e8f0"
+              }}
+            >
+              <div style={{ fontSize: "32px", marginBottom: "8px" }}>✓</div>
+              <div style={{ fontSize: "28px", fontWeight: "700", marginBottom: "4px" }}>
+                {orders.filter(o => o.status === "confirmed").length}
+              </div>
+              <div style={{ fontSize: "14px", opacity: 0.9, fontWeight: "500" }}>
+                Confirmed
+              </div>
+            </div>
+
+            <div 
+              className="filter-btn"
+              onClick={() => setFilterStatus("shipped")}
+              style={{
+                background: filterStatus === "shipped" 
+                  ? "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)" 
+                  : "#ffffff",
+                color: filterStatus === "shipped" ? "#fff" : "#1e293b",
+                padding: "24px",
+                borderRadius: "16px",
+                cursor: "pointer",
+                boxShadow: filterStatus === "shipped" 
+                  ? "0 8px 20px rgba(59, 130, 246, 0.4)" 
+                  : "0 4px 16px rgba(0, 0, 0, 0.08)",
+                border: filterStatus === "shipped" ? "none" : "2px solid #e2e8f0"
+              }}
+            >
+              <div style={{ fontSize: "32px", marginBottom: "8px" }}>🚚</div>
+              <div style={{ fontSize: "28px", fontWeight: "700", marginBottom: "4px" }}>
+                {orders.filter(o => o.status === "shipped").length}
+              </div>
+              <div style={{ fontSize: "14px", opacity: 0.9, fontWeight: "500" }}>
+                Shipped
+              </div>
+            </div>
+
+            <div 
+              className="filter-btn"
+              onClick={() => setFilterStatus("delivered")}
+              style={{
+                background: filterStatus === "delivered" 
+                  ? "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)" 
+                  : "#ffffff",
+                color: filterStatus === "delivered" ? "#fff" : "#1e293b",
+                padding: "24px",
+                borderRadius: "16px",
+                cursor: "pointer",
+                boxShadow: filterStatus === "delivered" 
+                  ? "0 8px 20px rgba(6, 182, 212, 0.4)" 
+                  : "0 4px 16px rgba(0, 0, 0, 0.08)",
+                border: filterStatus === "delivered" ? "none" : "2px solid #e2e8f0"
+              }}
+            >
+              <div style={{ fontSize: "32px", marginBottom: "8px" }}>📦</div>
+              <div style={{ fontSize: "28px", fontWeight: "700", marginBottom: "4px" }}>
+                {orders.filter(o => o.status === "delivered").length}
+              </div>
+              <div style={{ fontSize: "14px", opacity: 0.9, fontWeight: "500" }}>
+                Delivered
+              </div>
+            </div>
+          </div>
+
+          {/* Orders List */}
+          {loading ? (
+            <div style={{ textAlign: "center", padding: "60px 20px" }}>
+              <div className="loading-spinner" style={{ margin: "0 auto 20px" }}></div>
+              <p style={{ fontSize: "1.1rem", color: "#64748b" }}>Loading your orders...</p>
+            </div>
+          ) : filteredOrders.length === 0 ? (
+            <div style={{
+              textAlign: "center",
+              padding: "80px 20px",
+              backgroundColor: "#ffffff",
+              borderRadius: "20px",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.08)"
+            }}>
+              <div style={{ fontSize: "5rem", color: "#e5e7eb", marginBottom: "20px" }}>📦</div>
+              <h3 style={{ color: "#1e293b", marginBottom: "12px", fontSize: "1.8rem" }}>No orders found</h3>
+              <p style={{ color: "#64748b", marginBottom: "30px", fontSize: "1.05rem" }}>
+                {filterStatus === "all" 
+                  ? "You haven't placed any orders yet." 
+                  : `No ${filterStatus} orders at this time.`}
+              </p>
+            </div>
+          ) : (
           filteredOrders.map((order, orderIndex) => (
             <div
               key={order._id}
-              style={styles.orderCard}
-              // Note: Direct inline styling for :hover states and media queries is not possible.
-              // For full interactivity and responsiveness, external CSS would be recommended.
+              className="order-card"
+              style={{
+                marginBottom: "24px",
+                padding: "32px",
+                backgroundColor: "#ffffff",
+                borderRadius: "16px",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+                border: "1px solid #e2e8f0"
+              }}
             >
-              <div style={styles.orderHeader}>
-                <div style={styles.orderId}>
-                  🧾 Order ID: {order._id}
+              {/* Order Header */}
+              <div style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "24px",
+                paddingBottom: "16px",
+                borderBottom: "2px solid #f1f5f9"
+              }}>
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px"
+                }}>
+                  <div style={{
+                    width: "48px",
+                    height: "48px",
+                    background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+                    borderRadius: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "24px",
+                    color: "#fff"
+                  }}>
+                    📦
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "0.85rem", color: "#64748b", marginBottom: "4px" }}>
+                      Order ID
+                    </div>
+                    <div style={{ fontSize: "0.95rem", fontWeight: "700", color: "#1e293b" }}>
+                      #{order._id.slice(-8).toUpperCase()}
+                    </div>
+                  </div>
                 </div>
-                <div style={styles.orderDate}>
-                  {new Date(order.createdAt).toLocaleDateString()}
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: "0.85rem", color: "#64748b", marginBottom: "4px" }}>
+                    Order Date
+                  </div>
+                  <div style={{ fontSize: "0.95rem", fontWeight: "600", color: "#1e293b" }}>
+                    {new Date(order.createdAt).toLocaleDateString('en-US', { 
+                      month: 'short', 
+                      day: 'numeric', 
+                      year: 'numeric' 
+                    })}
+                  </div>
                 </div>
               </div>
 
-              <div style={styles.deliveryDetails}>
-                <strong style={styles.deliveryDetailsStrong}>Name:</strong> {order.username} <br />
-                <strong style={styles.deliveryDetailsStrong}>Phone:</strong> {order.phone} <br />
-                <strong style={styles.deliveryDetailsStrong}>Address:</strong> {order.address}
+              {/* Delivery Details */}
+              <div style={{
+                padding: "20px",
+                backgroundColor: "#f8fafc",
+                borderRadius: "12px",
+                marginBottom: "24px",
+                border: "1px solid #e2e8f0"
+              }}>
+                <h4 style={{ 
+                  fontSize: "1rem", 
+                  fontWeight: "700", 
+                  color: "#1e293b", 
+                  marginBottom: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px"
+                }}>
+                  🚚 Delivery Information
+                </h4>
+                <div style={{ display: "grid", gap: "8px", fontSize: "0.95rem" }}>
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <span style={{ color: "#64748b", minWidth: "80px" }}>Name:</span>
+                    <span style={{ color: "#1e293b", fontWeight: "600" }}>{order.username}</span>
+                  </div>
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <span style={{ color: "#64748b", minWidth: "80px" }}>Phone:</span>
+                    <span style={{ color: "#1e293b", fontWeight: "600" }}>{order.phone}</span>
+                  </div>
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <span style={{ color: "#64748b", minWidth: "80px" }}>Address:</span>
+                    <span style={{ color: "#1e293b", fontWeight: "600" }}>{order.address}</span>
+                  </div>
+                </div>
               </div>
 
-              <table style={styles.itemsTable}>
-                <thead style={styles.tableHead}>
-                  <tr>
-                    <th style={styles.tableHeaderCell}>Medicine</th>
-                    <th style={styles.tableHeaderCell}>Price</th>
-                    <th style={styles.tableHeaderCell}>Quantity</th>
-                    <th style={styles.tableHeaderCell}>Subtotal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {order.items.map((item, idx) => (
-                    <tr key={idx} style={{ backgroundColor: idx % 2 === 0 ? '#FDFEFF' : '#FFFFFF' }}> {/* Zebra striping */}
-                      <td style={{ ...styles.tableBodyCell, ...(idx === order.items.length - 1 ? styles.tableBodyCellLastRow : {}), ...styles.itemName }}>
-                        {item.medicineId?.name || "Unknown"}
-                      </td>
-                      <td style={{ ...styles.tableBodyCell, ...(idx === order.items.length - 1 ? styles.tableBodyCellLastRow : {}) }}>₹{item.price}</td>
-                      <td style={{ ...styles.tableBodyCell, ...(idx === order.items.length - 1 ? styles.tableBodyCellLastRow : {}) }}>{item.quantity}</td>
-                      <td style={{ ...styles.tableBodyCell, ...(idx === order.items.length - 1 ? styles.tableBodyCellLastRow : {}) }}>
-                        ₹{item.price * item.quantity}
-                      </td>
+              {/* Items Table */}
+              <div style={{ 
+                borderRadius: "12px", 
+                overflow: "hidden", 
+                border: "1px solid #e2e8f0",
+                marginBottom: "24px"
+              }}>
+                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                  <thead style={{ background: "#A8E6CF" }}>
+                    <tr>
+                      <th style={{ 
+                        padding: "16px 20px", 
+                        textAlign: "left", 
+                        color: "#1B1F3B", 
+                        fontWeight: "700",
+                        fontSize: "0.9rem"
+                      }}>
+                        Medicine
+                      </th>
+                      <th style={{ 
+                        padding: "16px 20px", 
+                        textAlign: "left", 
+                        color: "#1B1F3B", 
+                        fontWeight: "700",
+                        fontSize: "0.9rem"
+                      }}>
+                        Price
+                      </th>
+                      <th style={{ 
+                        padding: "16px 20px", 
+                        textAlign: "center", 
+                        color: "#1B1F3B", 
+                        fontWeight: "700",
+                        fontSize: "0.9rem"
+                      }}>
+                        Qty
+                      </th>
+                      <th style={{ 
+                        padding: "16px 20px", 
+                        textAlign: "right", 
+                        color: "#1B1F3B", 
+                        fontWeight: "700",
+                        fontSize: "0.9rem"
+                      }}>
+                        Subtotal
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {order.items.map((item, idx) => (
+                      <tr 
+                        key={idx} 
+                        style={{ 
+                          backgroundColor: idx % 2 === 0 ? '#ffffff' : '#f8fafc',
+                          borderBottom: idx === order.items.length - 1 ? "none" : "1px solid #e2e8f0"
+                        }}
+                      >
+                        <td style={{ 
+                          padding: "16px 20px", 
+                          color: "#1e293b", 
+                          fontWeight: "600",
+                          fontSize: "0.95rem"
+                        }}>
+                          💊 {item.medicineId?.name || "Unknown"}
+                        </td>
+                        <td style={{ 
+                          padding: "16px 20px", 
+                          color: "#64748b",
+                          fontSize: "0.95rem"
+                        }}>
+                          ₹{item.price}
+                        </td>
+                        <td style={{ 
+                          padding: "16px 20px", 
+                          textAlign: "center",
+                          color: "#64748b",
+                          fontSize: "0.95rem"
+                        }}>
+                          <span style={{
+                            background: "#e0f2fe",
+                            color: "#0369a1",
+                            padding: "4px 12px",
+                            borderRadius: "6px",
+                            fontWeight: "600"
+                          }}>
+                            {item.quantity}
+                          </span>
+                        </td>
+                        <td style={{ 
+                          padding: "16px 20px", 
+                          textAlign: "right",
+                          color: "#1e293b",
+                          fontWeight: "700",
+                          fontSize: "1rem"
+                        }}>
+                          ₹{item.price * item.quantity}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
-              <div style={styles.orderFooter}>
-                <div style={styles.orderStatus}>
-                  Status:{" "}
+              {/* Order Footer */}
+              <div style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingTop: "20px",
+                borderTop: "2px solid #f1f5f9"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <span style={{ color: "#64748b", fontSize: "0.95rem" }}>Status:</span>
                   <span
+                    className="status-badge"
                     style={{
-                      ...styles.orderStatusValue,
-                      backgroundColor: getStatusColor(order.status),
+                      padding: "8px 16px",
+                      borderRadius: "20px",
+                      fontSize: "0.85rem",
+                      fontWeight: "700",
+                      color: "#fff",
+                      textTransform: "capitalize",
+                      background: getStatusColor(order.status),
+                      boxShadow: `0 4px 12px ${getStatusColor(order.status)}40`
                     }}
                   >
                     {order.status}
                   </span>
                 </div>
-                <div style={styles.orderTotal}>
-                  Total: <span style={styles.orderTotalAmount}>₹{order.totalAmount}</span>
+                <div style={{ 
+                  display: "flex", 
+                  alignItems: "center", 
+                  gap: "8px",
+                  padding: "12px 20px",
+                  background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)",
+                  borderRadius: "12px"
+                }}>
+                  <span style={{ color: "#64748b", fontSize: "1rem" }}>Total:</span>
+                  <span style={{ 
+                    color: "#059669", 
+                    fontWeight: "700", 
+                    fontSize: "1.5rem" 
+                  }}>
+                    ₹{order.totalAmount}
+                  </span>
                 </div>
               </div>
             </div>
           ))
         )}
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
 };
 

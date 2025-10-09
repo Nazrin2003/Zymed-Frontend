@@ -52,104 +52,171 @@ const Signin = () => {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "24px",
+    padding: "40px 24px",
     boxSizing: "border-box",
-    background: `linear-gradient(#2a60a6d6, rgb(35 117 95 / 75%)), url(${bgImageUrl}) center/cover no-repeat`,
+    background: `linear-gradient(135deg, rgb(30 35 202 / 70%) 0%, rgb(92 210 246 / 53%) 100%), url(${bgImageUrl}) center/cover no-repeat`,
+  };
+
+  const container = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "100%",
+    maxWidth: "480px"
+  };
+
+  const logo = {
+    marginBottom: "30px",
+    textAlign: "center"
+  };
+
+  const logoText = {
+    fontSize: "3.5rem",
+    fontWeight: "800",
+    color: "#ffffff",
+    margin: 0,
+    textShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
+    letterSpacing: "-1px",
+    fontFamily: "'Inter', sans-serif"
+  };
+
+  const logoSubtext = {
+    fontSize: "1rem",
+    color: "rgba(255, 255, 255, 0.95)",
+    margin: "8px 0 0 0",
+    fontWeight: "500",
+    letterSpacing: "0.5px"
   };
 
   const card = {
     width: "100%",
-    maxWidth: "420px",
-    background: "#edf2f8ff",
-    borderRadius: "12px",
-    padding: "32px",
-    boxShadow: "0 10px 30px rgba(2,6,23,0.2)",
+    background: "rgba(255, 255, 255, 0.98)",
+    borderRadius: "20px",
+    padding: "40px",
+    boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)",
     fontFamily: "Inter, Arial, sans-serif",
     boxSizing: "border-box",
+    backdropFilter: "blur(10px)"
   };
 
   const heading = {
     margin: 0,
-    marginBottom: "18px",
-    fontSize: "27px",
-    color: "#172B4D",
+    marginBottom: "28px",
+    fontSize: "1.75rem",
+    color: "#1e293b",
     textAlign: "center",
+    fontWeight: "700",
+    letterSpacing: "-0.5px"
   };
 
   const input = {
     width: "100%",
-    padding: "12px 14px",
-    marginBottom: "14px",
-    borderRadius: "8px",
-    border: "1px solid #E6E9EE",
-    fontSize: "14px",
+    padding: "14px 16px",
+    marginBottom: "16px",
+    borderRadius: "12px",
+    border: "2px solid #e2e8f0",
+    fontSize: "15px",
     outline: "none",
     boxSizing: "border-box",
+    transition: "all 0.2s ease",
+    fontFamily: "'Inter', sans-serif",
+    backgroundColor: "#ffffff"
   };
 
   const button = {
     width: "100%",
-    padding: "12px",
-    borderRadius: "10px",
+    padding: "15px",
+    borderRadius: "12px",
     border: "none",
     cursor: "pointer",
     fontSize: "16px",
-    fontWeight: 600,
-    background: "#2a60a6",
+    fontWeight: 700,
+    background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
     color: "#fff",
-    transition: "transform .08s ease, background .2s ease",
+    transition: "all 0.3s ease",
+    boxShadow: "0 4px 15px rgba(99, 102, 241, 0.4)",
+    letterSpacing: "0.3px"
   };
 
   const bottomLine = {
-    marginTop: "14px",
+    marginTop: "20px",
     textAlign: "center",
-    color: "#6B7280",
+    color: "#64748b",
     fontSize: "14px",
+    fontWeight: "500"
   };
 
   const linkStyle = {
-    color: "#2a60a6",
+    color: "#6366f1",
     textDecoration: "none",
     marginLeft: "6px",
-    fontWeight: 600,
+    fontWeight: 700,
+    transition: "color 0.2s ease"
   };
 
   return (
     <div style={page}>
-      <div style={card}>
-        <h2 style={heading}>Zymed — Sign in</h2>
+      <div style={container}>
+        {/* Logo outside the card */}
+        <div style={logo}>
+          <h1 style={logoText}>Zymed</h1>
+          <p style={logoSubtext}>Your Health, Our Priority</p>
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          <input
-            style={input}
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            required
-          />
-          <input
-            style={input}
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-            required
-          />
-          <button
-            type="submit"
-            style={button}
-            onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.995)")}
-            onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            Sign In
-          </button>
-        </form>
+        {/* Card with form */}
+        <div style={card}>
+          <h2 style={heading}>Welcome Back</h2>
 
-        <div style={bottomLine}>
-          Don’t have an account?
-          <Link to="/signup" style={linkStyle}>Signup</Link>
+          <form onSubmit={handleSubmit}>
+            <input
+              style={input}
+              type="email"
+              name="email"
+              placeholder="Email address"
+              onChange={handleChange}
+              onFocus={(e) => e.target.style.borderColor = "#6366f1"}
+              onBlur={(e) => e.target.style.borderColor = "#e2e8f0"}
+              required
+            />
+            <input
+              style={input}
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={handleChange}
+              onFocus={(e) => e.target.style.borderColor = "#6366f1"}
+              onBlur={(e) => e.target.style.borderColor = "#e2e8f0"}
+              required
+            />
+            <button
+              type="submit"
+              style={button}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = "0 6px 20px rgba(99, 102, 241, 0.5)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 4px 15px rgba(99, 102, 241, 0.4)";
+              }}
+              onMouseDown={e => e.currentTarget.style.transform = "translateY(0) scale(0.98)"}
+              onMouseUp={e => e.currentTarget.style.transform = "translateY(-2px) scale(1)"}
+            >
+              Sign In
+            </button>
+          </form>
+
+          <div style={bottomLine}>
+            Don't have an account?
+            <Link 
+              to="/signup" 
+              style={linkStyle}
+              onMouseOver={(e) => e.target.style.color = "#8b5cf6"}
+              onMouseOut={(e) => e.target.style.color = "#6366f1"}
+            >
+              Sign Up
+            </Link>
+          </div>
         </div>
       </div>
     </div>

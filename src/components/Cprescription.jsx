@@ -74,32 +74,38 @@ const Cprescription = () => {
   }, [userId]);
 
   return (
-    <div style={{ background: "#F7FAFC", minHeight: "100vh", fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)", minHeight: "100vh", fontFamily: "'Inter', sans-serif" }}>
       <Nav />
 
       {/* Page Header */}
       <div
         style={{
-          backgroundImage: `linear-gradient(rgb(50 38 120 / 50%), rgb(48 91 57 / 50%)), url('https://images.unsplash.com/photo-1696861286643-341a8d7a79e9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+          backgroundImage: `linear-gradient(135deg, rgb(159 113 157 / 90%) 0%, rgb(6 182 212 / 42%) 100%), url('https://images.unsplash.com/photo-1696861286643-341a8d7a79e9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          padding: "130px 0px",
+          padding: "100px 0px",
           textAlign: "center",
           color: "white",
+          position: "relative",
+          overflow: "hidden"
         }}
       >
-        <h1 style={{ fontWeight: "bold", fontSize: "2.8rem", textShadow: "2px 2px 4px rgba(0,0,0,0.6)", margin: 0 }}>Upload Prescription</h1>
-        <p style={{ opacity: 0.9, fontSize: "1.1rem", marginTop: "10px" }}>Easily upload, track, and reorder your prescriptions</p>
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <h1 style={{ fontWeight: "700", fontSize: "3rem", textShadow: "2px 4px 8px rgba(0,0,0,0.3)", margin: 0, letterSpacing: "-0.5px" }}>💊 Prescription Management</h1>
+          <p style={{ opacity: 0.95, fontSize: "1.2rem", marginTop: "12px", fontWeight: "400" }}>Upload, track, and manage your prescriptions seamlessly</p>
+        </div>
       </div>
 
 
-      <div className="container py-5">
+      <div className="container py-5" style={{ maxWidth: "1200px" }}>
         {/* Upload Form */}
-        <div className="card shadow-sm border-0 mb-5" style={{ background: "#ffffff", borderRadius: "12px" }}>
-          <div className="card-body p-4">
-            <h4 className="text-dark mb-4" style={{ color: "#2D3748", fontSize: "1.5rem", fontWeight: "600" }}>
-              Upload New Prescription
+        <div className="card shadow-lg border-0 mb-5" style={{ background: "#ffffff", borderRadius: "16px", overflow: "hidden" }}>
+          <div style={{ background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)", padding: "20px 30px" }}>
+            <h4 style={{ color: "#ffffff", fontSize: "1.6rem", fontWeight: "700", margin: 0 }}>
+              📤 Upload New Prescription
             </h4>
+          </div>
+          <div className="card-body p-4">
             <form onSubmit={handleUpload}>
               <div className="mb-3">
                 <label className="form-label fw-semibold" style={{ color: "#4A5568", marginBottom: "8px" }}>
@@ -129,40 +135,51 @@ const Cprescription = () => {
                 type="submit"
                 className="btn w-100 fw-semibold"
                 style={{
-                  background: "linear-gradient(to right, #4299E1, #63B3ED)",
+                  background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)",
                   color: "#fff",
-                  borderRadius: "8px",
-                  transition: "background 0.3s ease, transform 0.2s ease",
+                  borderRadius: "10px",
+                  transition: "all 0.3s ease",
                   border: "none",
-                  padding: "12px 25px",
+                  padding: "14px 25px",
                   fontSize: "1.1rem",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+                  boxShadow: "0 6px 20px rgba(14, 165, 233, 0.4)",
+                  fontWeight: "600"
                 }}
+                onMouseOver={(e) => e.target.style.transform = "translateY(-2px)"}
+                onMouseOut={(e) => e.target.style.transform = "translateY(0)"}
               >
-                Upload Prescription
+                📤 Upload Prescription
               </button>
             </form>
             {status && (
-              <p className="mt-3 text-center fw-semibold" style={{ color: "#38A169", fontSize: "1rem" }}>
+              <div className="mt-3 text-center fw-semibold" style={{ 
+                color: status.includes("success") ? "#059669" : "#dc2626", 
+                fontSize: "1rem",
+                padding: "12px",
+                borderRadius: "8px",
+                backgroundColor: status.includes("success") ? "#d1fae5" : "#fee2e2"
+              }}>
                 {status}
-              </p>
+              </div>
             )}
           </div>
         </div>
 
         {/* Previous Prescriptions */}
-        <h3
-          className="mb-4 fw-bold"
-          style={{
-            color: "#2D3748",
-            borderBottom: "3px solid #68D391",
-            display: "inline-block",
-            paddingBottom: "5px",
-            fontSize: "2rem"
-          }}
-        >
-          Your Previous Prescriptions
-        </h3>
+        <div style={{ marginBottom: "30px" }}>
+          <h3
+            className="fw-bold"
+            style={{
+              color: "#0c4a6e",
+              fontSize: "2.2rem",
+              marginBottom: "8px",
+              fontWeight: "700"
+            }}
+          >
+            📋 Your Prescriptions
+          </h3>
+          <p style={{ color: "#64748b", fontSize: "1.05rem", margin: 0 }}>View and manage your prescription history</p>
+        </div>
 
         {prescriptions.length === 0 ? (
           <p style={{ color: "#4A5568", fontSize: "1.1rem" }}>No prescriptions uploaded yet.</p>
@@ -213,36 +230,79 @@ const Cprescription = () => {
               {presc.status}
             </span>
 
-            {presc.status === "verified" &&
-              presc.reply?.medicines?.length > 0 && (
+            {presc.status === "verified" && presc.reply && (
                 <div className="mt-3">
-                  <div className="row g-3">
-                    {presc.reply.medicines.map((m) => (
-                      <div key={m.medicineId._id} className="col-md-6 col-lg-4">
+                  {/* Pharmacist Reply Message */}
+                  {presc.reply.message && (
+                    <div style={{
+                      background: "linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)",
+                      borderLeft: "5px solid #0284c7",
+                      padding: "16px 20px",
+                      borderRadius: "12px",
+                      marginBottom: "20px",
+                      boxShadow: "0 2px 8px rgba(14, 165, 233, 0.15)"
+                    }}>
+                      <p style={{ fontWeight: "700", color: "#0369a1", marginBottom: "8px", fontSize: "1rem", display: "flex", alignItems: "center", gap: "8px" }}>
+                        💊 Pharmacist's Instructions
+                      </p>
+                      <p style={{ color: "#0c4a6e", margin: 0, fontSize: "0.95rem", lineHeight: "1.6", fontWeight: "500" }}>
+                        {presc.reply.message}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Medicines List */}
+                  {presc.reply.medicines?.length > 0 && (
+                    <div className="row g-4">
+                      {presc.reply.medicines.map((m) => (
+                      <div key={m.medicineId._id} className="col-md-6 col-lg-6">
                         <div
-                          className="card shadow-sm h-100"
-                          style={{ border: "1px solid #E2E8F0", borderRadius: "10px", boxShadow: "0 2px 10px rgba(0,0,0,0.08)" }}
+                          className="card h-100"
+                          style={{ 
+                            border: "none", 
+                            borderRadius: "16px", 
+                            boxShadow: "0 4px 20px rgba(14, 165, 233, 0.15)",
+                            transition: "all 0.3s ease",
+                            overflow: "hidden",
+                            background: "#ffffff"
+                          }}
+                          onMouseOver={(e) => {
+                            e.currentTarget.style.transform = "translateY(-4px)";
+                            e.currentTarget.style.boxShadow = "0 8px 30px rgba(14, 165, 233, 0.25)";
+                          }}
+                          onMouseOut={(e) => {
+                            e.currentTarget.style.transform = "translateY(0)";
+                            e.currentTarget.style.boxShadow = "0 4px 20px rgba(14, 165, 233, 0.15)";
+                          }}
                         >
-                          <div className="card-body p-3">
-                            <h6 className="fw-bold mb-2" style={{ color: "#2D3748", fontSize: "1.1rem" }}>
+                          <div style={{ background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)", padding: "16px 20px" }}>
+                            <h6 className="fw-bold mb-0" style={{ color: "#ffffff", fontSize: "1.3rem" }}>
                               {m.medicineId.name}
                             </h6>
-                            <p className="mb-1" style={{ color: "#4A5568", fontSize: "0.95rem" }}>
-                              Price: ₹{m.medicineId.price}
-                            </p>
-                            <p className="mb-3" style={{ color: "#4A5568", fontSize: "0.95rem" }}>
-                              Qty Suggested: {m.quantity}
-                            </p>
+                          </div>
+                          <div className="card-body p-4">
+                            <div style={{ marginBottom: "20px" }}>
+                              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+                                <span style={{ color: "#64748b", fontSize: "0.95rem", fontWeight: "500" }}>💰 Price:</span>
+                                <span style={{ color: "#059669", fontSize: "1.3rem", fontWeight: "700" }}>₹{m.medicineId.price}</span>
+                              </div>
+                              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                <span style={{ color: "#64748b", fontSize: "0.95rem", fontWeight: "500" }}>📦 Quantity:</span>
+                                <span style={{ color: "#0c4a6e", fontSize: "1.1rem", fontWeight: "600" }}>{m.quantity}</span>
+                              </div>
+                            </div>
                             <button
                               className="btn w-100 fw-semibold"
                               style={{
-                                background: "linear-gradient(to right, #4299E1, #63B3ED)",
+                                background: "linear-gradient(135deg, #059669 0%, #10b981 100%)",
                                 color: "#fff",
-                                borderRadius: "6px",
+                                borderRadius: "10px",
                                 border: "none",
-                                padding: "8px 15px",
-                                fontSize: "0.95rem",
-                                transition: "background 0.3s ease, transform 0.2s ease",
+                                padding: "12px 20px",
+                                fontSize: "1.05rem",
+                                transition: "all 0.3s ease",
+                                boxShadow: "0 4px 12px rgba(5, 150, 105, 0.3)",
+                                fontWeight: "600"
                               }}
                               onClick={async () => {
                                 await axios.post(
@@ -252,16 +312,25 @@ const Cprescription = () => {
                                     quantity: 1,
                                   }
                                 );
-                                alert("Added to cart!");
+                                alert("✅ Added to cart successfully!");
+                              }}
+                              onMouseOver={(e) => {
+                                e.target.style.transform = "scale(1.02)";
+                                e.target.style.boxShadow = "0 6px 16px rgba(5, 150, 105, 0.4)";
+                              }}
+                              onMouseOut={(e) => {
+                                e.target.style.transform = "scale(1)";
+                                e.target.style.boxShadow = "0 4px 12px rgba(5, 150, 105, 0.3)";
                               }}
                             >
-                              Add to Cart
+                              🛒 Add to Cart
                             </button>
                           </div>
                         </div>
                       </div>
                     ))}
-                  </div>
+                    </div>
+                  )}
                 </div>
               )}
           </td>

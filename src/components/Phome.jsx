@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
-import NavBar from "./NavBar"; // adjust path if needed
-
+import { useNavigate } from "react-router-dom";
+import NavBar from "./NavBar";
 
 const Phome = () => {
     const [medicines, setMedicines] = useState([]);
@@ -19,6 +18,7 @@ const Phome = () => {
     });
     const [editId, setEditId] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [pendingOrders, setPendingOrders] = useState(0);
     const navigate = useNavigate();
 
     const fetchMedicines = async () => {
@@ -39,14 +39,6 @@ const Phome = () => {
         }
     };
 
-    useEffect(() => {
-        fetchMedicines();
-        fetchPrescriptions();
-        fetchPendingOrders();
-    }, []);
-
-    const [pendingOrders, setPendingOrders] = useState(0);
-
     const fetchPendingOrders = async () => {
         try {
             const res = await axios.get("http://localhost:3030/orders/pending/count");
@@ -56,10 +48,14 @@ const Phome = () => {
         }
     };
 
+    useEffect(() => {
+        fetchMedicines();
+        fetchPrescriptions();
+        fetchPendingOrders();
+    }, []);
 
     const handleAddOrUpdate = async (e) => {
         e.preventDefault();
-
         const form = new FormData();
         for (let key in formData) {
             form.append(key, formData[key]);
@@ -68,7 +64,6 @@ const Phome = () => {
         const url = editId
             ? `http://localhost:3030/medicines/${editId}`
             : "http://localhost:3030/medicines";
-
         const method = editId ? "put" : "post";
 
         await axios[method](url, form, {
@@ -77,8 +72,8 @@ const Phome = () => {
 
         alert(editId ? "Medicine updated" : "Medicine added");
         fetchMedicines();
+        handleCancel();
     };
-
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -99,6 +94,7 @@ const Phome = () => {
     };
 
     const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this medicine?")) return;
         try {
             await axios.delete(`http://localhost:3030/medicines/${id}`);
             fetchMedicines();
@@ -119,12 +115,7 @@ const Phome = () => {
             image: null
         });
         setEditId(med._id);
-    };
-
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        navigate("/signin");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const filteredMedicines = medicines.filter((med) =>
@@ -134,158 +125,275 @@ const Phome = () => {
     const isExpired = (date) => new Date(date) < new Date();
     const pendingPrescriptions = prescriptions.filter(p => p.status === "pending");
 
-    // Layout styles
-    const layout = {
-        display: "flex",
-        minHeight: "100vh",
-        fontFamily: "Inter, sans-serif",
-        backgroundColor: "#f3f4f6"
-    };
-
-    const sidebar = {
-        width: "240px",
-        backgroundColor: "#1f2937",
-        color: "#fff",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        padding: "20px 0"
-    };
-
-    const sidebarItem = {
-        padding: "12px 24px",
-        color: "#d1d5db",
-        fontWeight: "500",
-        textDecoration: "none",
-        display: "block",
-        transition: "0.3s"
-    };
-
-    const content = {
-        flex: 1,
-        display: "flex",
-        flexDirection: "column"
-    };
-
-    const navbar = {
-        background: "#fff",
-        padding: "16px 24px",
-        borderBottom: "1px solid #e5e7eb",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center"
-    };
-
-    const statsContainer = {
-        display: "flex",
-        gap: "20px",
-        marginBottom: "30px",
-        marginTop: "20px"
-    };
-
-    const statBox = {
-        flex: 1,
-        background: "#fff",
-        padding: "20px",
-        borderRadius: "10px",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-        fontWeight: "600",
-        textAlign: "center"
-    };
-
     return (
-        <div style={{ background: "#f8f9fa", minHeight: "100vh", display: "flex" }}>
-            {/* Sidebar */}
-            <NavBar />
-            <div style={sidebar}>
-                <div>
-                    <h2 style={{ color: "#fff", textAlign: "center", marginBottom: "30px" }}>Zymed</h2>
-                    <Link to="/phome" style={sidebarItem}>📊 Dashboard</Link>
-                    <Link to="/porder" style={sidebarItem}>📦 Manage Orders</Link>
-                    <Link to="/pprescription" style={sidebarItem}>💊 Prescription Requests</Link>
-                    <Link to="notification" style={sidebarItem}>🔔 Notifications</Link>
-                </div>
-                <button
-                    onClick={handleLogout}
-                    style={{
-                        margin: "20px",
-                        padding: "10px",
-                        background: "#dc2626",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "6px",
-                        cursor: "pointer"
-                    }}
-                >
-                    Logout
-                </button>
-            </div>
+        <>
+            <style>{`
+                .stat-card {
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+                }
+                
+                .form-card {
+                    background: #fff;
+                    border-radius: 16px;
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .form-card:hover {
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+                }
+                
+                .table-container {
+                    background: #fff;
+                    border-radius: 16px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+                }
+                
+                .medicine-row {
+                    transition: all 0.2s ease;
+                }
+                
+                .medicine-row:hover {
+                    background: #f8fafc !important;
+                    transform: scale(1.01);
+                }
+                
+                .action-btn {
+                    transition: all 0.2s ease;
+                }
+                
+                .action-btn:hover {
+                    transform: translateY(-2px);
+                }
+                
+                .search-input {
+                    transition: all 0.3s ease;
+                }
+                
+                .search-input:focus {
+                    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+                    border-color: #3b82f6;
+                }
+            `}</style>
+            
+            <div style={{ 
+                background: "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)", 
+                minHeight: "100vh", 
+                display: "flex" 
+            }}>
+                <NavBar />
 
-
-            {/* Main Content */}
-            <div style={content}>
-                {/* Top Navbar */}
-                <div style={navbar}>
-                    <h2>Pharmacist Dashboard</h2>
-                    <input
-                        type="text"
-                        placeholder="🔍 Search medicines..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        style={{
-                            padding: "8px 14px",
-                            border: "1px solid #ccc",
-                            borderRadius: "20px",
-                            width: "250px",
-                            outline: "none"
-                        }}
-                    />
-                </div>
-
-                <div style={{ padding: "24px" }}>
-                    {/* Stats */}
-                    <div style={statsContainer}>
-                        <div style={{ ...statBox, borderTop: "4px solid #16a34a" }}>
-                            Medicines: {medicines.length}
+                <div style={{ 
+                    marginLeft: "260px", 
+                    flex: 1, 
+                    padding: "32px",
+                    maxWidth: "calc(100vw - 260px)" 
+                }}>
+                    {/* Top Header */}
+                    <div style={{
+                        background: "#fff",
+                        padding: "24px 32px",
+                        borderRadius: "16px",
+                        marginBottom: "32px",
+                        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.08)",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center"
+                    }}>
+                        <div>
+                            <h2 style={{ 
+                                margin: 0, 
+                                color: "#1e293b",
+                                fontSize: "28px",
+                                fontWeight: "700"
+                            }}>
+                                Pharmacist Dashboard
+                            </h2>
+                            <p style={{ 
+                                margin: "4px 0 0 0", 
+                                color: "#64748b",
+                                fontSize: "14px" 
+                            }}>
+                                Manage your pharmacy inventory
+                            </p>
                         </div>
-                        <div style={{ ...statBox, borderTop: "4px solid #f59e0b" }}>
-                            Pending Orders: {pendingOrders}
+                        <input
+                            type="text"
+                            placeholder="🔍 Search medicines..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="search-input"
+                            style={{
+                                padding: "12px 20px",
+                                border: "2px solid #e2e8f0",
+                                borderRadius: "12px",
+                                width: "300px",
+                                outline: "none",
+                                fontSize: "14px",
+                                fontWeight: "500"
+                            }}
+                        />
+                    </div>
+
+                    {/* Stats Cards */}
+                    <div style={{ 
+                        display: "grid", 
+                        gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", 
+                        gap: "24px", 
+                        marginBottom: "32px" 
+                    }}>
+                        <div className="stat-card" style={{
+                            background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                            padding: "28px",
+                            borderRadius: "16px",
+                            color: "#fff",
+                            boxShadow: "0 4px 16px rgba(16, 185, 129, 0.3)"
+                        }}>
+                            <div style={{ fontSize: "36px", marginBottom: "8px" }}>💊</div>
+                            <div style={{ fontSize: "32px", fontWeight: "700", marginBottom: "4px" }}>
+                                {medicines.length}
+                            </div>
+                            <div style={{ fontSize: "14px", opacity: 0.9, fontWeight: "500" }}>
+                                Total Medicines
+                            </div>
                         </div>
-                        <div style={{ ...statBox, borderTop: "4px solid #dc2626" }}>
-                            Pending Prescriptions: {pendingPrescriptions.length}
+
+                        <div className="stat-card" style={{
+                            background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                            padding: "28px",
+                            borderRadius: "16px",
+                            color: "#fff",
+                            boxShadow: "0 4px 16px rgba(245, 158, 11, 0.3)"
+                        }}>
+                            <div style={{ fontSize: "36px", marginBottom: "8px" }}>📦</div>
+                            <div style={{ fontSize: "32px", fontWeight: "700", marginBottom: "4px" }}>
+                                {pendingOrders}
+                            </div>
+                            <div style={{ fontSize: "14px", opacity: 0.9, fontWeight: "500" }}>
+                                Pending Orders
+                            </div>
+                        </div>
+
+                        <div className="stat-card" style={{
+                            background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                            padding: "28px",
+                            borderRadius: "16px",
+                            color: "#fff",
+                            boxShadow: "0 4px 16px rgba(239, 68, 68, 0.3)"
+                        }}>
+                            <div style={{ fontSize: "36px", marginBottom: "8px" }}>📋</div>
+                            <div style={{ fontSize: "32px", fontWeight: "700", marginBottom: "4px" }}>
+                                {pendingPrescriptions.length}
+                            </div>
+                            <div style={{ fontSize: "14px", opacity: 0.9, fontWeight: "500" }}>
+                                Pending Prescriptions
+                            </div>
                         </div>
                     </div>
 
                     {/* Medicine Form */}
-                    <div className="card shadow-sm p-4 mb-4">
-                        <h3 className="mb-3">Medicine Entry Form</h3>
+                    <div className="form-card" style={{ padding: "32px", marginBottom: "32px" }}>
+                        <h3 style={{ 
+                            marginBottom: "24px", 
+                            color: "#1e293b",
+                            fontSize: "22px",
+                            fontWeight: "700"
+                        }}>
+                            {editId ? "✏️ Edit Medicine" : "➕ Add New Medicine"}
+                        </h3>
                         <form className="row g-3" onSubmit={handleAddOrUpdate}>
                             <div className="col-md-4">
-                                <label className="form-label">Name</label>
-                                <input type="text" className="form-control" name="name" value={formData.name} onChange={handleChange} required />
+                                <label className="form-label" style={{ fontWeight: "600", color: "#475569" }}>
+                                    Medicine Name
+                                </label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    name="name" 
+                                    value={formData.name} 
+                                    onChange={handleChange} 
+                                    required 
+                                    style={{ borderRadius: "8px", padding: "10px 14px" }}
+                                />
                             </div>
                             <div className="col-md-4">
-                                <label className="form-label">Category</label>
-                                <input type="text" className="form-control" name="category" value={formData.category} onChange={handleChange} />
+                                <label className="form-label" style={{ fontWeight: "600", color: "#475569" }}>
+                                    Category
+                                </label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    name="category" 
+                                    value={formData.category} 
+                                    onChange={handleChange}
+                                    style={{ borderRadius: "8px", padding: "10px 14px" }}
+                                />
                             </div>
                             <div className="col-md-4">
-                                <label className="form-label">Price</label>
-                                <input type="number" className="form-control" name="price" value={formData.price} onChange={handleChange} required />
+                                <label className="form-label" style={{ fontWeight: "600", color: "#475569" }}>
+                                    Price (₹)
+                                </label>
+                                <input 
+                                    type="number" 
+                                    className="form-control" 
+                                    name="price" 
+                                    value={formData.price} 
+                                    onChange={handleChange} 
+                                    required
+                                    style={{ borderRadius: "8px", padding: "10px 14px" }}
+                                />
                             </div>
                             <div className="col-md-4">
-                                <label className="form-label">Quantity</label>
-                                <input type="number" className="form-control" name="quantity" value={formData.quantity} onChange={handleChange} required />
+                                <label className="form-label" style={{ fontWeight: "600", color: "#475569" }}>
+                                    Quantity
+                                </label>
+                                <input 
+                                    type="number" 
+                                    className="form-control" 
+                                    name="quantity" 
+                                    value={formData.quantity} 
+                                    onChange={handleChange} 
+                                    required
+                                    style={{ borderRadius: "8px", padding: "10px 14px" }}
+                                />
                             </div>
                             <div className="col-md-4">
-                                <label className="form-label">Expiry Date</label>
-                                <input type="date" className="form-control" name="expiryDate" value={formData.expiryDate} onChange={handleChange} required />
+                                <label className="form-label" style={{ fontWeight: "600", color: "#475569" }}>
+                                    Expiry Date
+                                </label>
+                                <input 
+                                    type="date" 
+                                    className="form-control" 
+                                    name="expiryDate" 
+                                    value={formData.expiryDate} 
+                                    onChange={handleChange} 
+                                    required
+                                    style={{ borderRadius: "8px", padding: "10px 14px" }}
+                                />
                             </div>
                             <div className="col-md-4">
-                                <label className="form-label">Manufacturer</label>
-                                <input type="text" className="form-control" name="manufacturer" value={formData.manufacturer} onChange={handleChange} />
+                                <label className="form-label" style={{ fontWeight: "600", color: "#475569" }}>
+                                    Manufacturer
+                                </label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    name="manufacturer" 
+                                    value={formData.manufacturer} 
+                                    onChange={handleChange}
+                                    style={{ borderRadius: "8px", padding: "10px 14px" }}
+                                />
                             </div>
                             <div className="col-md-4">
-                                <label className="form-label">Requires Prescription</label>
+                                <label className="form-label" style={{ fontWeight: "600", color: "#475569" }}>
+                                    Requires Prescription
+                                </label>
                                 <select
                                     className="form-select"
                                     name="prescriptionRequired"
@@ -293,78 +401,200 @@ const Phome = () => {
                                     onChange={(e) =>
                                         setFormData({ ...formData, prescriptionRequired: e.target.value === "true" })
                                     }
+                                    style={{ borderRadius: "8px", padding: "10px 14px" }}
                                 >
                                     <option value="false">No</option>
                                     <option value="true">Yes</option>
                                 </select>
                             </div>
                             <div className="col-md-4">
-                                <label className="form-label">Medicine Image</label>
+                                <label className="form-label" style={{ fontWeight: "600", color: "#475569" }}>
+                                    Medicine Image
+                                </label>
                                 <input
                                     type="file"
                                     name="image"
                                     className="form-control"
                                     onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
+                                    style={{ borderRadius: "8px", padding: "10px 14px" }}
                                 />
-
-
                             </div>
-                            <div className="col-md-4">
-                                <button type="submit" className="btn btn-success w-100">{editId ? "Update" : "Add"}</button>
+                            <div className="col-md-4" style={{ display: "flex", alignItems: "flex-end" }}>
+                                <button 
+                                    type="submit" 
+                                    className="btn w-100"
+                                    style={{
+                                        background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                                        color: "#fff",
+                                        padding: "12px",
+                                        borderRadius: "8px",
+                                        fontWeight: "600",
+                                        border: "none",
+                                        boxShadow: "0 4px 12px rgba(16, 185, 129, 0.3)"
+                                    }}
+                                >
+                                    {editId ? "Update Medicine" : "Add Medicine"}
+                                </button>
                             </div>
                             {editId && (
-                                <div className="col-md-4">
-                                    <button type="button" className="btn btn-secondary w-100" onClick={handleCancel}>Cancel</button>
+                                <div className="col-md-4" style={{ display: "flex", alignItems: "flex-end" }}>
+                                    <button 
+                                        type="button" 
+                                        className="btn w-100" 
+                                        onClick={handleCancel}
+                                        style={{
+                                            background: "#64748b",
+                                            color: "#fff",
+                                            padding: "12px",
+                                            borderRadius: "8px",
+                                            fontWeight: "600",
+                                            border: "none"
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
                                 </div>
                             )}
                         </form>
                     </div>
 
                     {/* Medicine Table */}
-                    <h3>Medicine Inventory</h3>
-                    <div className="table-responsive">
-                        <table className="table table-hover bg-white shadow-sm rounded">
-                            <thead className="table-light">
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Expiry</th>
-                                    <th>Manufacturer</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredMedicines.map((med) => (
-                                    <tr key={med._id} style={{ backgroundColor: isExpired(med.expiryDate) ? "#fee2e2" : "#fff" }}>
-                                        <td>
-                                            {med.imageUrl ? (
-                                                <img src={`http://localhost:3030/${med.imageUrl}`} alt={med.name} style={{ width: "60px", height: "60px", objectFit: "cover", borderRadius: "6px" }} />
-                                            ) : (
-                                                <span>—</span>
-                                            )}
-                                        </td>
-                                        <td>{med.name}</td>
-                                        <td>{med.category}</td>
-                                        <td>₹{med.price}</td>
-                                        <td>{med.quantity}</td>
-                                        <td>{new Date(med.expiryDate).toLocaleDateString()}</td>
-                                        <td>{med.manufacturer}</td>
-                                        <td>
-                                            <button onClick={() => handleEdit(med)} className="btn btn-sm btn-primary me-2">Edit</button>
-                                            <button onClick={() => handleDelete(med._id)} className="btn btn-sm btn-danger">Delete</button>
-                                        </td>
+                    <div className="table-container">
+                        <div style={{ padding: "24px 32px", borderBottom: "2px solid #e2e8f0" }}>
+                            <h3 style={{ 
+                                margin: 0, 
+                                color: "#1e293b",
+                                fontSize: "22px",
+                                fontWeight: "700"
+                            }}>
+                                📦 Medicine Inventory
+                            </h3>
+                            <p style={{ 
+                                margin: "4px 0 0 0", 
+                                color: "#64748b",
+                                fontSize: "14px" 
+                            }}>
+                                {filteredMedicines.length} medicines found
+                            </p>
+                        </div>
+                        <div className="table-responsive">
+                            <table className="table align-middle mb-0">
+                                <thead style={{ background: "#f8fafc", borderBottom: "2px solid #e2e8f0" }}>
+                                    <tr>
+                                        <th style={{ padding: "16px 24px", fontWeight: "700", color: "#475569" }}>Image</th>
+                                        <th style={{ padding: "16px 24px", fontWeight: "700", color: "#475569" }}>Name</th>
+                                        <th style={{ padding: "16px 24px", fontWeight: "700", color: "#475569" }}>Category</th>
+                                        <th style={{ padding: "16px 24px", fontWeight: "700", color: "#475569" }}>Price</th>
+                                        <th style={{ padding: "16px 24px", fontWeight: "700", color: "#475569" }}>Quantity</th>
+                                        <th style={{ padding: "16px 24px", fontWeight: "700", color: "#475569" }}>Expiry</th>
+                                        <th style={{ padding: "16px 24px", fontWeight: "700", color: "#475569" }}>Manufacturer</th>
+                                        <th style={{ padding: "16px 24px", fontWeight: "700", color: "#475569" }}>Actions</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {filteredMedicines.map((med) => (
+                                        <tr 
+                                            key={med._id} 
+                                            className="medicine-row"
+                                            style={{ 
+                                                backgroundColor: isExpired(med.expiryDate) ? "#fee2e2" : "#fff",
+                                                borderBottom: "1px solid #e2e8f0"
+                                            }}
+                                        >
+                                            <td style={{ padding: "16px 24px" }}>
+                                                {med.imageUrl ? (
+                                                    <img 
+                                                        src={`http://localhost:3030/${med.imageUrl}`} 
+                                                        alt={med.name} 
+                                                        style={{ 
+                                                            width: "60px", 
+                                                            height: "60px", 
+                                                            objectFit: "cover", 
+                                                            borderRadius: "8px",
+                                                            boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+                                                        }} 
+                                                    />
+                                                ) : (
+                                                    <div style={{
+                                                        width: "60px",
+                                                        height: "60px",
+                                                        background: "#e2e8f0",
+                                                        borderRadius: "8px",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        fontSize: "24px"
+                                                    }}>
+                                                        💊
+                                                    </div>
+                                                )}
+                                            </td>
+                                            <td style={{ padding: "16px 24px", fontWeight: "600", color: "#1e293b" }}>
+                                                {med.name}
+                                            </td>
+                                            <td style={{ padding: "16px 24px", color: "#64748b" }}>{med.category}</td>
+                                            <td style={{ padding: "16px 24px", fontWeight: "600", color: "#10b981" }}>
+                                                ₹{med.price}
+                                            </td>
+                                            <td style={{ padding: "16px 24px" }}>
+                                                <span style={{
+                                                    padding: "4px 12px",
+                                                    borderRadius: "6px",
+                                                    background: med.quantity === 0 ? "#fee2e2" : "#dcfce7",
+                                                    color: med.quantity === 0 ? "#dc2626" : "#16a34a",
+                                                    fontWeight: "600",
+                                                    fontSize: "13px"
+                                                }}>
+                                                    {med.quantity}
+                                                </span>
+                                            </td>
+                                            <td style={{ padding: "16px 24px", color: "#64748b" }}>
+                                                {new Date(med.expiryDate).toLocaleDateString()}
+                                            </td>
+                                            <td style={{ padding: "16px 24px", color: "#64748b" }}>{med.manufacturer}</td>
+                                            <td style={{ padding: "16px 24px" }}>
+                                                <button 
+                                                    onClick={() => handleEdit(med)} 
+                                                    className="btn btn-sm action-btn me-2"
+                                                    style={{
+                                                        background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+                                                        color: "#fff",
+                                                        border: "none",
+                                                        padding: "8px 16px",
+                                                        borderRadius: "6px",
+                                                        fontWeight: "600",
+                                                        fontSize: "13px",
+                                                        boxShadow: "0 2px 8px rgba(59, 130, 246, 0.3)"
+                                                    }}
+                                                >
+                                                    ✏️ Edit
+                                                </button>
+                                                <button 
+                                                    onClick={() => handleDelete(med._id)} 
+                                                    className="btn btn-sm action-btn"
+                                                    style={{
+                                                        background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                                                        color: "#fff",
+                                                        border: "none",
+                                                        padding: "8px 16px",
+                                                        borderRadius: "6px",
+                                                        fontWeight: "600",
+                                                        fontSize: "13px",
+                                                        boxShadow: "0 2px 8px rgba(239, 68, 68, 0.3)"
+                                                    }}
+                                                >
+                                                    🗑️ Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
