@@ -100,8 +100,8 @@ const Cprescription = () => {
       <div className="container py-5" style={{ maxWidth: "1200px" }}>
         {/* Upload Form */}
         <div className="card shadow-lg border-0 mb-5" style={{ background: "#ffffff", borderRadius: "16px", overflow: "hidden" }}>
-          <div style={{ background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)", padding: "20px 30px" }}>
-            <h4 style={{ color: "#ffffff", fontSize: "1.6rem", fontWeight: "700", margin: 0 }}>
+          <div style={{ background: "linear-gradient(135deg,rgb(252, 252, 252) 0%,rgb(254, 254, 254) 100%)", padding: "20px 30px" }}>
+            <h4 style={{ color: "#060606", fontSize: "1.6rem", fontWeight: "700", margin: 0 }}>
               📤 Upload New Prescription
             </h4>
           </div>
@@ -152,8 +152,8 @@ const Cprescription = () => {
               </button>
             </form>
             {status && (
-              <div className="mt-3 text-center fw-semibold" style={{ 
-                color: status.includes("success") ? "#059669" : "#dc2626", 
+              <div className="mt-3 text-center fw-semibold" style={{
+                color: status.includes("success") ? "#059669" : "#dc2626",
                 fontSize: "1rem",
                 padding: "12px",
                 borderRadius: "8px",
@@ -185,163 +185,163 @@ const Cprescription = () => {
           <p style={{ color: "#4A5568", fontSize: "1.1rem" }}>No prescriptions uploaded yet.</p>
         ) : (
           <div className="table-responsive shadow-sm rounded" style={{ borderRadius: "12px", overflow: "hidden" }}>
-  <table className="table align-middle bg-white border" style={{ borderCollapse: "separate", borderSpacing: "0 10px", margin: "0", width: "100%" }}>
-    <thead style={{ background: "#EBF8FF" }}>
-      <tr>
-        <th style={{ width: "10%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>File</th>
-        <th style={{ width: "15%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>Notes</th>
-        <th style={{ width: "55%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>Status / Medicines</th>
-        <th style={{ width: "20%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>Uploaded At</th>
-      </tr>
-    </thead>
-    <tbody>
-      {prescriptions.map((presc) => (
-        <tr key={presc._id} style={{ background: "#fff", marginBottom: "10px", borderRadius: "8px", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
-          <td style={{ padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
-            <a
-              href={`http://localhost:3030/${presc.fileUrl}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: "#4299E1", fontWeight: "500", wordBreak: "break-word", textDecoration: "none" }}
-            >
-              View File
-            </a>
-          </td>
-          <td style={{ color: "#4A5568", wordBreak: "break-word", padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
-            {presc.notes || "—"}
-          </td>
-          <td style={{ padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
-            <span
-              className="badge px-3 py-2"
-              style={{
-                background:
-                  presc.status === "verified"
-                    ? "#38A169"
-                    : presc.status === "rejected"
-                      ? "#E53E3E"
-                      : "#ED8936",
-                color: "#fff",
-                fontSize: "0.85rem",
-                borderRadius: "9999px",
-                padding: "8px 12px",
-                fontWeight: "600"
-              }}
-            >
-              {presc.status}
-            </span>
+            <table className="table align-middle bg-white border" style={{ borderCollapse: "separate", borderSpacing: "0 10px", margin: "0", width: "100%" }}>
+              <thead style={{ background: "#EBF8FF" }}>
+                <tr>
+                  <th style={{ width: "10%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>File</th>
+                  <th style={{ width: "15%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>Notes</th>
+                  <th style={{ width: "55%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>Status / Medicines</th>
+                  <th style={{ width: "20%", padding: "15px 20px", fontWeight: "600", color: "#2D3748" }}>Uploaded At</th>
+                </tr>
+              </thead>
+              <tbody>
+                {prescriptions.map((presc) => (
+                  <tr key={presc._id} style={{ background: "#fff", marginBottom: "10px", borderRadius: "8px", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
+                    <td style={{ padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
+                      <a
+                        href={`http://localhost:3030/${presc.fileUrl}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "#4299E1", fontWeight: "500", wordBreak: "break-word", textDecoration: "none" }}
+                      >
+                        View File
+                      </a>
+                    </td>
+                    <td style={{ color: "#4A5568", wordBreak: "break-word", padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
+                      {presc.notes || "—"}
+                    </td>
+                    <td style={{ padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
+                      <span
+                        className="badge px-3 py-2"
+                        style={{
+                          background:
+                            presc.status === "verified"
+                              ? "#38A169"
+                              : presc.status === "rejected"
+                                ? "#E53E3E"
+                                : "#ED8936",
+                          color: "#fff",
+                          fontSize: "0.85rem",
+                          borderRadius: "9999px",
+                          padding: "8px 12px",
+                          fontWeight: "600"
+                        }}
+                      >
+                        {presc.status}
+                      </span>
 
-            {presc.status === "verified" && presc.reply && (
-                <div className="mt-3">
-                  {/* Pharmacist Reply Message */}
-                  {presc.reply.message && (
-                    <div style={{
-                      background: "linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)",
-                      borderLeft: "5px solid #0284c7",
-                      padding: "16px 20px",
-                      borderRadius: "12px",
-                      marginBottom: "20px",
-                      boxShadow: "0 2px 8px rgba(14, 165, 233, 0.15)"
-                    }}>
-                      <p style={{ fontWeight: "700", color: "#0369a1", marginBottom: "8px", fontSize: "1rem", display: "flex", alignItems: "center", gap: "8px" }}>
-                        💊 Pharmacist's Instructions
-                      </p>
-                      <p style={{ color: "#0c4a6e", margin: 0, fontSize: "0.95rem", lineHeight: "1.6", fontWeight: "500" }}>
-                        {presc.reply.message}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Medicines List */}
-                  {presc.reply.medicines?.length > 0 && (
-                    <div className="row g-4">
-                      {presc.reply.medicines.map((m) => (
-                      <div key={m.medicineId._id} className="col-md-6 col-lg-6">
-                        <div
-                          className="card h-100"
-                          style={{ 
-                            border: "none", 
-                            borderRadius: "16px", 
-                            boxShadow: "0 4px 20px rgba(14, 165, 233, 0.15)",
-                            transition: "all 0.3s ease",
-                            overflow: "hidden",
-                            background: "#ffffff"
-                          }}
-                          onMouseOver={(e) => {
-                            e.currentTarget.style.transform = "translateY(-4px)";
-                            e.currentTarget.style.boxShadow = "0 8px 30px rgba(14, 165, 233, 0.25)";
-                          }}
-                          onMouseOut={(e) => {
-                            e.currentTarget.style.transform = "translateY(0)";
-                            e.currentTarget.style.boxShadow = "0 4px 20px rgba(14, 165, 233, 0.15)";
-                          }}
-                        >
-                          <div style={{ background: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)", padding: "16px 20px" }}>
-                            <h6 className="fw-bold mb-0" style={{ color: "#ffffff", fontSize: "1.3rem" }}>
-                              {m.medicineId.name}
-                            </h6>
-                          </div>
-                          <div className="card-body p-4">
-                            <div style={{ marginBottom: "20px" }}>
-                              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                                <span style={{ color: "#64748b", fontSize: "0.95rem", fontWeight: "500" }}>💰 Price:</span>
-                                <span style={{ color: "#059669", fontSize: "1.3rem", fontWeight: "700" }}>₹{m.medicineId.price}</span>
-                              </div>
-                              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                <span style={{ color: "#64748b", fontSize: "0.95rem", fontWeight: "500" }}>📦 Quantity:</span>
-                                <span style={{ color: "#0c4a6e", fontSize: "1.1rem", fontWeight: "600" }}>{m.quantity}</span>
-                              </div>
+                      {presc.status === "verified" && presc.reply && (
+                        <div className="mt-3">
+                          {/* Pharmacist Reply Message */}
+                          {presc.reply.message && (
+                            <div style={{
+                              background: "linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)",
+                              borderLeft: "5px solid #0284c7",
+                              padding: "16px 20px",
+                              borderRadius: "12px",
+                              marginBottom: "20px",
+                              boxShadow: "0 2px 8px rgba(14, 165, 233, 0.15)"
+                            }}>
+                              <p style={{ fontWeight: "700", color: "#0369a1", marginBottom: "8px", fontSize: "1rem", display: "flex", alignItems: "center", gap: "8px" }}>
+                                💊 Pharmacist's Instructions
+                              </p>
+                              <p style={{ color: "#0c4a6e", margin: 0, fontSize: "0.95rem", lineHeight: "1.6", fontWeight: "500" }}>
+                                {presc.reply.message}
+                              </p>
                             </div>
-                            <button
-                              className="btn w-100 fw-semibold"
-                              style={{
-                                background: "linear-gradient(135deg, #059669 0%, #10b981 100%)",
-                                color: "#fff",
-                                borderRadius: "10px",
-                                border: "none",
-                                padding: "12px 20px",
-                                fontSize: "1.05rem",
-                                transition: "all 0.3s ease",
-                                boxShadow: "0 4px 12px rgba(5, 150, 105, 0.3)",
-                                fontWeight: "600"
-                              }}
-                              onClick={async () => {
-                                await axios.post(
-                                  `http://localhost:3030/cart/${userId}`,
-                                  {
-                                    medicineId: m.medicineId._id,
-                                    quantity: 1,
-                                  }
-                                );
-                                alert("✅ Added to cart successfully!");
-                              }}
-                              onMouseOver={(e) => {
-                                e.target.style.transform = "scale(1.02)";
-                                e.target.style.boxShadow = "0 6px 16px rgba(5, 150, 105, 0.4)";
-                              }}
-                              onMouseOut={(e) => {
-                                e.target.style.transform = "scale(1)";
-                                e.target.style.boxShadow = "0 4px 12px rgba(5, 150, 105, 0.3)";
-                              }}
-                            >
-                              🛒 Add to Cart
-                            </button>
-                          </div>
+                          )}
+
+                          {/* Medicines List */}
+                          {presc.reply.medicines?.length > 0 && (
+                            <div className="row g-4">
+                              {presc.reply.medicines.map((m) => (
+                                <div key={m.medicineId._id} className="col-md-6 col-lg-6">
+                                  <div
+                                    className="card h-100"
+                                    style={{
+                                      border: "none",
+                                      borderRadius: "16px",
+                                      boxShadow: "0 4px 20px rgba(14, 165, 233, 0.15)",
+                                      transition: "all 0.3s ease",
+                                      overflow: "hidden",
+                                      background: "#ffffff"
+                                    }}
+                                    onMouseOver={(e) => {
+                                      e.currentTarget.style.transform = "translateY(-4px)";
+                                      e.currentTarget.style.boxShadow = "0 8px 30px rgba(14, 165, 233, 0.25)";
+                                    }}
+                                    onMouseOut={(e) => {
+                                      e.currentTarget.style.transform = "translateY(0)";
+                                      e.currentTarget.style.boxShadow = "0 4px 20px rgba(14, 165, 233, 0.15)";
+                                    }}
+                                  >
+                                    <div style={{ background: "linear-gradient(135deg,rgb(252, 252, 252) 0%,rgb(255, 255, 255) 100%)", padding: "16px 20px" }}>
+                                      <h6 className="fw-bold mb-0" style={{ color: "#060606", fontSize: "1.3rem" }}>
+                                        {m.medicineId.name}
+                                      </h6>
+                                    </div>
+                                    <div className="card-body p-4">
+                                      <div style={{ marginBottom: "20px" }}>
+                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+                                          <span style={{ color: "#64748b", fontSize: "0.95rem", fontWeight: "500" }}>💰 Price:</span>
+                                          <span style={{ color: "#059669", fontSize: "1.3rem", fontWeight: "700" }}>₹{m.medicineId.price}</span>
+                                        </div>
+                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                          <span style={{ color: "#64748b", fontSize: "0.95rem", fontWeight: "500" }}>📦 Quantity:</span>
+                                          <span style={{ color: "#0c4a6e", fontSize: "1.1rem", fontWeight: "600" }}>{m.quantity}</span>
+                                        </div>
+                                      </div>
+                                      <button
+                                        className="btn w-100 fw-semibold"
+                                        style={{
+                                          background: "linear-gradient(135deg, #059669 0%, #10b981 100%)",
+                                          color: "#fff",
+                                          borderRadius: "10px",
+                                          border: "none",
+                                          padding: "12px 20px",
+                                          fontSize: "1.05rem",
+                                          transition: "all 0.3s ease",
+                                          boxShadow: "0 4px 12px rgba(5, 150, 105, 0.3)",
+                                          fontWeight: "600"
+                                        }}
+                                        onClick={async () => {
+                                          await axios.post(
+                                            `http://localhost:3030/cart/${userId}`,
+                                            {
+                                              medicineId: m.medicineId._id,
+                                              quantity: 1,
+                                            }
+                                          );
+                                          alert("✅ Added to cart successfully!");
+                                        }}
+                                        onMouseOver={(e) => {
+                                          e.target.style.transform = "scale(1.02)";
+                                          e.target.style.boxShadow = "0 6px 16px rgba(5, 150, 105, 0.4)";
+                                        }}
+                                        onMouseOut={(e) => {
+                                          e.target.style.transform = "scale(1)";
+                                          e.target.style.boxShadow = "0 4px 12px rgba(5, 150, 105, 0.3)";
+                                        }}
+                                      >
+                                        🛒 Add to Cart
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    ))}
-                    </div>
-                  )}
-                </div>
-              )}
-          </td>
-          <td style={{ color: "#4A5568", whiteSpace: "nowrap", padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
-            {new Date(presc.uploadedAt).toLocaleString()}
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+                      )}
+                    </td>
+                    <td style={{ color: "#4A5568", whiteSpace: "nowrap", padding: "15px 20px", borderBottom: "1px solid #E2E8F0" }}>
+                      {new Date(presc.uploadedAt).toLocaleString()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
         )}
       </div>

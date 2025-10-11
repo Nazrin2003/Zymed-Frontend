@@ -223,22 +223,7 @@ const Phome = () => {
                                 Manage your pharmacy inventory
                             </p>
                         </div>
-                        <input
-                            type="text"
-                            placeholder="🔍 Search medicines..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="search-input"
-                            style={{
-                                padding: "12px 20px",
-                                border: "2px solid #e2e8f0",
-                                borderRadius: "12px",
-                                width: "300px",
-                                outline: "none",
-                                fontSize: "14px",
-                                fontWeight: "500"
-                            }}
-                        />
+                      
                     </div>
 
                     {/* Stats Cards */}
@@ -460,22 +445,46 @@ const Phome = () => {
 
                     {/* Medicine Table */}
                     <div className="table-container">
-                        <div style={{ padding: "24px 32px", borderBottom: "2px solid #e2e8f0" }}>
-                            <h3 style={{ 
-                                margin: 0, 
-                                color: "#1e293b",
-                                fontSize: "22px",
-                                fontWeight: "700"
-                            }}>
-                                📦 Medicine Inventory
-                            </h3>
-                            <p style={{ 
-                                margin: "4px 0 0 0", 
-                                color: "#64748b",
-                                fontSize: "14px" 
-                            }}>
-                                {filteredMedicines.length} medicines found
-                            </p>
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            padding: "24px 32px",
+                            borderBottom: "2px solid #e2e8f0"
+                        }}>
+                            <div>
+                                <h3 style={{ 
+                                    margin: 0, 
+                                    color: "#1e293b",
+                                    fontSize: "22px",
+                                    fontWeight: "700"
+                                }}>
+                                    📦 Medicine Inventory
+                                </h3>
+                                <p style={{ 
+                                    margin: "4px 0 0 0", 
+                                    color: "#64748b",
+                                    fontSize: "14px" 
+                                }}>
+                                    {filteredMedicines.length} medicines found
+                                </p>
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="🔍 Search medicines..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="search-input"
+                                style={{
+                                    padding: "12px 20px",
+                                    border: "2px solid #e2e8f0",
+                                    borderRadius: "12px",
+                                    width: "300px",
+                                    outline: "none",
+                                    fontSize: "14px",
+                                    fontWeight: "500"
+                                }}
+                            />
                         </div>
                         <div className="table-responsive">
                             <table className="table align-middle mb-0">

@@ -16,6 +16,19 @@ const Medicine = () => {
       .catch(err => console.error(err));
   }, []);
 
+  // Check if medicine is expired
+  const isExpired = (expiryDate) => {
+    if (!expiryDate) return false;
+    const today = new Date();
+    const expiry = new Date(expiryDate);
+    return expiry < today;
+  };
+
+  // Check if medicine is out of stock (quantity = 0 or expired)
+  const isOutOfStock = (medicine) => {
+    return medicine.quantity === 0 || isExpired(medicine.expiryDate);
+  };
+
   const handleSubscribe = (medicine) => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user?.id) {
@@ -326,7 +339,7 @@ const Medicine = () => {
                       )}
                       
                       {/* Stock Badge */}
-                      {med.quantity === 0 && (
+                      {isOutOfStock(med) && (
                         <div style={{
                           position: "absolute",
                           top: "10px",
@@ -414,7 +427,7 @@ const Medicine = () => {
 
                       {/* Action Buttons */}
                       <div style={{ marginTop: "auto" }}>
-                        {med.quantity === 0 ? (
+                        {isOutOfStock(med) ? (
                           <button
                             disabled
                             style={{
